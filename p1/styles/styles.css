@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+body {
+  margin: 0;
+  color: #303030;
+}
+
+button {
+  margin: 0;
+  border: none;
+  font-weight: bold;
+  color: #303030;
+}
+
+h1 {
+  margin: 0;
+}
+
+header {
+  background-color: #f0ce46;
+}
+
+.container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.web-name {
+  font-size: 28px;
+}
+
+.header-buttons {
+  display: flex;
+}
+
+.header-buttons button {
+  margin-left: 15px;
+  padding: 7px 20px;
+  border-radius: 4px;
+}
+
+#cart {
+  background-color: whitesmoke;
+}
+
+#login {
+  background-color: #57c94d;
+}
+
+#register {
+  background-color: #67baf5;
+}

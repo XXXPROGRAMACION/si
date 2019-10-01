@@ -1,24 +1,29 @@
 * {
   box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  color: #4a4a4a;
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
   margin: 0;
+  padding-bottom: 70px;
   background-color: #EEF5F6;
-  color: #303030;
 }
 
 a {
   margin: 0;
   font-weight: bold;
-  color: #303030;
   text-decoration: none;
 }
 
 h1 {
   margin: 0;
-  color: #4a4a4a;
+}
+
+h2 {
+  margin: 0;
 }
 
 header {
@@ -27,10 +32,17 @@ header {
 }
 
 footer {
+  position: absolute;
   height: 20px;
-  margin-top: 60px;
+  right: 0;
+  bottom: 0;
+  left: 0;
   box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
   background-color: #ffda74;
+}
+
+form {
+  padding-bottom: 60px;
 }
 
 .container {
@@ -58,7 +70,9 @@ footer {
 }
 
 .card .content {
+  position: relative;
   padding: 15px 20px;
+  width: 100%;
 }
 
 .card .content .title {
@@ -67,6 +81,54 @@ footer {
 
 .card .content .subtitle {
   font-size: 20px;
+}
+
+.card .content .row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 15px;
+}
+
+.card .content .row.big-gap {
+  column-gap: 25px;
+}
+
+.card .content .row.one-three {
+  grid-template-columns: 1fr 3fr;
+}
+
+.card .content .row.two-three {
+  grid-template-columns: 2fr 3fr;
+}
+
+.card .content input {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: solid 1px #d4d4d4;
+  background-color: #ececec;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.card .content input.first {
+  margin-top: 20px;
+}
+
+.card .content input.submit {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 0 0 4px 4px;
+  border: none;
+  background-color: #46DF6F;
+}
+
+.card .content input.submit.left {
+  border-bottom-right-radius: 0;
 }
 
 .movie-card {
@@ -91,7 +153,7 @@ footer {
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-column-gap: 10px;
+  column-gap: 10px;
   grid-row-gap: 10px;
   margin-top: 10px;
 }
@@ -161,12 +223,17 @@ header .header {
   padding-bottom: 10px;
 }
 
-.header.web-name {
-  font-size: 28px;
+.header h1 {
+  font-size: 32px;
+}
+
+.header h2 {
+  font-size: 20px;
 }
 
 .header .buttons {
   display: flex;
+  align-items: center;
 }
 
 .header .buttons a {
@@ -175,10 +242,14 @@ header .header {
   border-radius: 4px;
 }
 
+.header .buttons h2 {
+  margin-right: 10px;
+}
+
 .login-image-placeholder {
-  width: 50%;
+  width: 100%;
   padding-top: 40%;
-  background-color: deeppink;
+  background: linear-gradient(62deg, rgba(204,217,144,1) 0%, rgba(56,213,224,1) 100%);
 }
 
 #cart {
@@ -186,9 +257,17 @@ header .header {
 }
 
 #login {
-  background-color: #57c94d;
+  background-color: #46DF6F;
 }
 
 #register {
   background-color: #67baf5;
+}
+
+#history {
+  background-color: #85B7E9;
+}
+
+#logout {
+  background-color: #FA8C8C;
 }

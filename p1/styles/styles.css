@@ -252,6 +252,39 @@ header .header {
   background: linear-gradient(62deg, rgba(204,217,144,1) 0%, rgba(56,213,224,1) 100%);
 }
 
+.shopping-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #EEF5F6;
+  padding: -10px 0px 0px 0px;
+  box-shadow: 0 0 0px 0px rgba(0, 0, 0, 0.15);
+}
+
+.shopping-item {
+  display: grid;
+  grid-template-columns: 5fr 2fr 1fr;
+  grid-template-rows: 10px 25px auto;
+  background-color: white;
+  margin: 0px 0px 10px 0px;
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
+}
+
+.shopping-title {
+  font-size: 20px;
+}
+
+.shopping-date {
+  font-size: 20px;
+}
+
+.shopping-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #6ABE44;
+  text-align: right;
+}
+
 #cart {
   background-color: whitesmoke;
 }

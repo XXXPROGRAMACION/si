@@ -16,6 +16,7 @@ a {
   margin: 0;
   font-weight: bold;
   text-decoration: none;
+  cursor: pointer;
 }
 
 h1 {
@@ -26,6 +27,10 @@ h2 {
   margin: 0;
 }
 
+p {
+  margin: 0;
+}
+
 header {
   box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
   background-color:#ffda74;
@@ -33,12 +38,15 @@ header {
 
 footer {
   position: absolute;
-  height: 20px;
   right: 0;
   bottom: 0;
   left: 0;
   box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
   background-color: #ffda74;
+}
+
+select:invalid {
+  color: gray;
 }
 
 .container {
@@ -144,7 +152,7 @@ footer {
   padding-bottom: 60px;
 }
 
-.form input {
+.form input, .form select {
   display: block;
   width: 100%;
   padding: 10px 15px;
@@ -153,6 +161,13 @@ footer {
   background-color: #ececec;
   font-size: 16px;
   font-weight: bold;
+}
+
+.form select {
+  padding-left: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .form input.first {
@@ -166,7 +181,7 @@ footer {
   cursor: pointer;
 }
 
-.form.vertical input {
+.form.vertical input, .form.form.vertical select {
   margin-top: 15px;
 }
 
@@ -238,7 +253,7 @@ footer {
   padding-left: 10px;
 }
 
-header .header {
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -257,16 +272,28 @@ header .header {
 .header .buttons {
   display: flex;
   align-items: center;
+  height: 38px;
 }
 
 .header .buttons a {
+  display: flex;
+  align-items: center;
+  height: 100%;
   margin-left: 15px;
-  padding: 7px 20px;
+  padding: 0 20px;
   border-radius: 4px;
 }
 
 .header .buttons h2 {
   margin-right: 10px;
+}
+
+.footer {
+  padding: 5px 0 7px 0;
+}
+
+.footer p {
+  font-size: 11px;
 }
 
 .login-image-placeholder {
@@ -297,11 +324,13 @@ header .header {
 }
 
 #cart {
+  width: 40px;
+  padding: 5px 0;
   background-color: whitesmoke;
-  padding: 5px;
 }
 
 #cart img {
+  margin: 0 auto;
   height: 20px;
 }
 
@@ -319,4 +348,21 @@ header .header {
 
 #logout {
   background-color: #FA8C8C;
+}
+
+#search-icon {
+  position: relative;
+}
+
+#search-icon input {
+  height: 100%;
+}
+
+#search-icon img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }

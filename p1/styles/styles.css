@@ -120,8 +120,17 @@ select:invalid {
 }
 
 .card.movie .poster-placeholder {
-  padding-top: 120%;
+  position: relative;
+  padding-top: 150%;
   background-color: deeppink;
+}
+
+.card.movie .poster-placeholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .card.movie .content {
@@ -204,12 +213,21 @@ select:invalid {
 }
 
 .detailed .poster-placeholder {
+  position: relative;
   grid-column-start: 1;
   grid-column-end: 2;
   grid-row-start: 1;
   grid-row-end: 3;
-  padding-top: 120%;
+  padding-top: 150%;
   background-color: deeppink;
+}
+
+.detailed .poster-placeholder img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .detailed .info {
@@ -222,7 +240,7 @@ select:invalid {
 }
 
 .detailed .info .header {
-  padding: 10px;
+  padding: 20px;
 }
 
 .details {

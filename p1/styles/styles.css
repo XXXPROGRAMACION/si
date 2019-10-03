@@ -6,7 +6,7 @@
 
 body {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
   margin: 0;
   padding-bottom: 70px;
   background-color: #EEF5F6;
@@ -383,4 +383,13 @@ select:invalid {
   height: 24px;
   transform: translate(-50%, -50%);
   pointer-events: none;
+}
+
+.scrollable {
+  height: 100%;
+  overflow: scroll;
+}
+
+.container.content {
+  padding-bottom: 40px;
 }

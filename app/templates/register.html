@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="card first">
+      <div class="content">
+        <h1>Registrar una cuenta</h1>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <form class="form vertical" action="">
+          <div class="row big-gap">
+            <div>
+              <h2>Datos de la cuenta</h1>
+              <input class="first" type="email" name="email" placeholder="Correo electrónico"/>
+              <input type="text" name="username" placeholder="Nombre de usuario"/>
+              <div class="row">
+                <input type="password" name="password" placeholder="Contraseña"/>
+                <input type="password" name="passwordCheck" placeholder="Repetir contraseña"/>
+              </div>
+            </div>
+            <div>
+              <h2>Datos del cliente</h1>
+              <div class="row two-three">
+                <input class="first" type="text" name="fullname" placeholder="Nombre"/>
+                <input type="text" name="lastname" placeholder="Apellidos"/>
+              </div>
+              <div class="row one-three">
+                <select name="gender" required>
+                  <option value="" selected disabled hidden>Género</option>
+                  <option value="male">Hombre</option>
+                  <option value="female">Mujer</option>
+                  <option value="other">Otro</option>
+                </select> 
+                <input type="text" name="direction" placeholder="Direccion"/>
+              </div>
+              <input type="text" name="bank-account" placeholder="Número de cuenta"/>
+            </div>
+          </div>
+          <input class="submit" type="submit" value="Crear cuenta"/>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

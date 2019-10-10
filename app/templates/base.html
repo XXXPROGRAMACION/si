@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>SuperPelis.net</title>
+    <link rel="icon" href="{{ url_for('static', filename='media/icons/superpelis.png') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}"/>
+    <meta charset="UTF-8"/>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header">
+          <a href="{{ url_for('index') }}">
+            <h1>SuperPelis.net</h1>
+          </a>
+          <div class="buttons">
+            <a id="cart">
+              <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
+            </a>
+            <a id="login" href="{{ url_for('login') }}">Iniciar sesión</a>
+            <a id="register" href="{{ url_for('register') }}">Registro</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    {% block content %}{% endblock %}
+    <footer>
+      <div class="container">
+        <div class="footer">
+          <p>
+            SuperPelis.net no se hace responsable de los posibles daños causados
+            por este servicio como: nauseas, pérdida de contacto con la realidad
+            y otros trastornos psicológicos.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

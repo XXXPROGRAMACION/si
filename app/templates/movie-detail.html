@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="card first row no-gap detail">
+      <div class="poster-placeholder">
+        <img src="../media/posters/taxi-driver.jpg" alt="taxi-driver">
+      </div>
+      <div class="info">
+        <div class="content">
+          <h1>{{ movie.title }}</h1>
+        </div>
+        <div class="details">
+          <div class="type">Tipo de producto</div>
+          <div class="data">{{ movie.type }}</div>
+          <div class="type">Título original</div>
+          <div class="data">{{ movie.original_title }}</div>
+          <div class="type">Año</div>
+          <div class="data">{{ movie.year }}</div>
+          <div class="type">Dirección</div>
+          <div class="data">{{ movie.director }}</div>
+          <div class="type">Duración</div>
+          <div class="data">{{ movie.duration }} min.</div>
+          <div class="type">Géneros</div>
+          <div class="data">{{ movie.genres_string }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

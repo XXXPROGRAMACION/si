@@ -161,6 +161,10 @@ select:invalid {
   grid-template-columns: 3fr 1fr;
 }
 
+.search-results {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+}
+
 .form.vertical {
   padding-bottom: 60px;
 }

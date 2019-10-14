@@ -41,9 +41,22 @@ def logout():
     session.pop('usuario', None)
     return redirect(url_for('index')) """
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if 'query' in request.args:
+        movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+        movies = json.loads(movies_data)['movies']
+        search_result = []
+        for movie in movies:
+            if (request.args['query'] in movie['title'] or request.args['query'] in movie['original_title']) and request.args['category'] in movie['genres']:    
+                movie["poster"] = "./static/media/posters/"+str(movie["id"])+".jpg"
+                movie["poster_alt"] = movie["original_title"].replace(" ", "-").lower()
+                search_result.append(movie)
+        return render_template('search.html', search_result=search_result)
+
     return render_template('index.html')
+
 
 @app.route('/movie-detail/<int:movie_id>')
 def movie_detail(movie_id):
@@ -52,7 +65,10 @@ def movie_detail(movie_id):
     movie = next(filter(lambda x : x["id"] == movie_id, movies), None)
     movie["genres_string"] = ", ".join(movie["genres"])
     movie["genres_string"] = movie["genres_string"][0].upper()+movie["genres_string"][1:]
-    return render_template('movie-detail.html', movie=movie)
+    poster = {}
+    poster["url"] = "../static/media/posters/" + str(movie_id) + ".jpg"
+    poster["alt"] = movie["original_title"].replace(" ", "-").lower()
+    return render_template('movie-detail.html', movie=movie, poster=poster)
 
 @app.route('/login')
 def login():

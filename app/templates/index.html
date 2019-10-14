@@ -8,33 +8,33 @@
       </div>
     </div>
     <div class="movie-grid">
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
+      <a class="card movie" href="{{ url_for('movie_detail', movie_id=1) }}">
         <div class="poster-placeholder">
-          <img src="./media/posters/taxi-driver.jpg" alt="taxi-driver">
+          <img src="./static/media/posters/1.jpg" alt="taxi-driver">
         </div>
         <div class="content">
           <h1>Taxi Driver</h1>
         </div>
       </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
+      <a class="card movie" href="{{ url_for('movie_detail', movie_id=2) }}">
         <div class="poster-placeholder">
-          <img src="./media/posters/zombieland.jpg" alt="zombieland">
+          <img src="./static/media/posters/2.jpg" alt="zombieland">
         </div>
         <div class="content">
           <h1>Zombieland</h1>
         </div>
       </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
+      <a class="card movie" href="{{ url_for('movie_detail', movie_id=4) }}">
         <div class="poster-placeholder">
-          <img src="./media/posters/fight-club.jpg" alt="fight-club">
+          <img src="./static/media/posters/4.jpg" alt="fight-club">
         </div>
         <div class="content">
           <h1>Fight Club</h1>
         </div>
       </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
+      <a class="card movie" href="{{ url_for('movie_detail', movie_id=7) }}">
         <div class="poster-placeholder">
-          <img src="./media/posters/harry-potter-iii.jpg" alt="harry-potter-iii">
+          <img src="./static/media/posters/7.jpg" alt="harry-potter-iii">
         </div>
         <div class="content">
           <h1>Harry Potter III</h1>
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="card">
-        <form class="form" action="">
+        <form class="form" method="get" action="">
           <div class="row no-gap movie-search">
             <div class="content">
               <div class="row movie-search-params">
@@ -56,87 +56,25 @@
                   <option value="" selected disabled hidden>Categoría</option>
                   <option value="action">Acción</option>
                   <option value="animation">Animación</option>
+                  <option value="adventure">Aventura</option>
                   <option value="comedy">Comedia</option>
                   <option value="drama">Drama</option>
                   <option value="musical">Musical</option>
                   <option value="science-fiction">Ciencia ficción</option>
-                  <option value="terror">Terror</option>
+                  <option value="horror">Horror</option>
                   <option value="thriller">Thriller</option>
                 </select> 
               </div>               
             </div>
             <div id="search-icon">
               <input class="submit" type="Submit" value="">
-              <img src="./media/icons/search.png"/>
+              <img src="./static/media/icons/search.png"/>
             </div>
           </div>
         </form>
     </div>
-    <div class="movie-grid">
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/rey-leon.jpg" alt="rey-leon">
-        </div>
-        <div class="content">
-          <h1>El Rey León</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/fight-club.jpg" alt="fight-club">
-        </div>
-        <div class="content">
-          <h1>Fight Club</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/taxi-driver.jpg" alt="taxi-driver">
-        </div>
-        <div class="content">
-          <h1>Taxi Driver</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/coco.jpg" alt="coco">
-        </div>
-        <div class="content">
-          <h1>Coco</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/pulp-fiction.jpg" alt="pulp-fiction">
-        </div>
-        <div class="content">
-          <h1>Pulp Fiction</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/harry-potter-iii.jpg" alt="harry-potter-iii">
-        </div>
-        <div class="content">
-          <h1>Harry Potter III</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/sharknado-ii.jpg" alt="sharknado-ii">
-        </div>
-        <div class="content">
-          <h1>Sharknado II</h1>
-        </div>
-      </a>
-      <a class="card movie" href="{{ url_for('movie_detail') }}">
-        <div class="poster-placeholder">
-          <img src="./media/posters/zombieland.jpg" alt="zombieland">
-        </div>
-        <div class="content">
-          <h1>Zombieland</h1>
-        </div>
-      </a>
+    <div class="movie-grid search-results">
+        {% block search_results %}{% endblock %}
     </div>
   </div>
 {% endblock %}

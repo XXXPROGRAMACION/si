@@ -51,8 +51,8 @@
           <div class="row no-gap movie-search">
             <div class="content">
               <div class="row movie-search-params">
-                <input type="text" name="query" placeholder="Búsqueda..."/>
-                <select name="category" required>
+                <input type="text" name="q" placeholder="Búsqueda..."/>
+                <select name="genre">
                   <option value="" selected disabled hidden>Categoría</option>
                   <option value="action">Acción</option>
                   <option value="animation">Animación</option>
@@ -74,7 +74,16 @@
         </form>
     </div>
     <div class="movie-grid">
-        {% block search_results %}{% endblock %}
+      {% for movie in search_result %}
+        <a class="card movie" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+          <div class="poster-placeholder">
+            <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
+          </div>
+          <div class="content">
+            <h1>{{ movie.title }}</h1>
+          </div>
+        </a>
+      {% endfor %}
     </div>
   </div>
 {% endblock %}

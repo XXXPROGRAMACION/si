@@ -41,6 +41,7 @@ def register():
 
 @app.route('/register', methods=['post'])
 def submit_register():
+    add_user(request)
     return render_template('login.html')
 
 @app.route('/shopping-history')

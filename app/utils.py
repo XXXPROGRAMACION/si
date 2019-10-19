@@ -11,15 +11,18 @@ def movie_filter(movie, q, genre):
 
     return True
 
+
 def movie_add_poster(movie):
     movie["poster"] = "../static/media/posters/"+str(movie["id"])+".jpg"
     movie["poster_alt"] = movie["original_title"].replace(" ", "-").lower()
     return movie
 
+
 def movie_add_genres_string(movie):
     movie["genres_string"] = ", ".join(movie["genres"])
     movie["genres_string"] = movie["genres_string"][0].upper()+movie["genres_string"][1:]
     return movie
+
 
 def add_user(request):
     file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
@@ -38,6 +41,7 @@ def add_user(request):
     })
     json.dump(data, open(os.path.join(app.root_path,'users/users.json'), 'w', encoding="utf-8"), indent=2)
 
+
 def is_valid(username, password):
     file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
 
@@ -49,6 +53,7 @@ def is_valid(username, password):
 
     return False
 
+
 def get_user(username):
     file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
 
@@ -59,3 +64,28 @@ def get_user(username):
             return user
 
     return None
+
+
+def user_exists(username):
+    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+
+    user_data = json.loads(file_data)['users']
+
+    for user in user_data:
+        if user['username'] == username:
+            return True
+
+    return False
+
+
+def email_exists(emai):
+    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+
+    user_data = json.loads(file_data)['users']
+
+    for user in user_data:
+        if user['email'] == emai:
+            return True
+
+    return False
+

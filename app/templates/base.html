@@ -24,7 +24,7 @@
                 <a id="register" href="{{ url_for('register') }}">Registro</a>
             </div>
           {% else %}
-          Bienvenido {{ session.user.fullname }}
+          Bienvenido, {{ session.user.fullname }}
             <div class="buttons">
                 <a id="cart">
                   <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
@@ -35,6 +35,13 @@
         </div>
       </div>
     </header>
+    {% with messages = get_flashed_messages() %}
+      {% for message in messages %}
+        <div class="card container alert">
+          <strong>Error:</strong>&nbsp;&nbsp;{{ message }}
+        </div>
+      {% endfor %}
+    {% endwith %}
     {% block content %}{% endblock %}
     <footer>
       <div class="container">

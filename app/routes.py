@@ -60,6 +60,14 @@ def register():
 
 @app.route('/register', methods=['post'])
 def submit_register():
+    if email_exists(request.form.get('email')):
+        flash('E-mail ' + request.form.get('email') + ' ya registrado', 'error')
+        return render_template('register.html')
+
+    if user_exists(request.form.get('username')):
+        flash('Nombre de usuario' + request.form.get('username') + ' ya registrado', 'error')
+        return render_template('register.html')
+
     add_user(request)
     return redirect(url_for('login'))
 

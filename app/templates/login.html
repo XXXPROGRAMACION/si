@@ -1,13 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% with messages = get_flashed_messages() %}
-    {% for message in messages %}
-      <div class="card container alert">
-        <strong>Error:</strong> {{ message }}
-      </div>
-    {% endfor %}
-  {% endwith %}
   <div class="container">
     <div class="card first">
       <div class="content">
@@ -18,8 +11,8 @@
       <div class="content">
         <h2>Datos de la cuenta</h1>
         <form class="form vertical" action="" method="post">
-          <input class="first" type="text" name="username" placeholder="Correo electrónico o nombre de usuario"/>
-          <input type="password" name="password" placeholder="Contraseña"/>
+          <input class="first" type="text" name="username" placeholder="Correo electrónico o nombre de usuario" required/>
+          <input type="password" name="password" placeholder="Contraseña" required/>
           <input class="submit left" type="submit" value="Iniciar sesión"/>
         </form>
       </div>

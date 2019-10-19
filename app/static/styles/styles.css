@@ -321,6 +321,13 @@ select:invalid {
   color: #6ABE44;
 }
 
+.alert {
+  width: 300px;
+  margin-top: 40px;
+  padding: 15px;
+  background-color: rgb(255, 185, 158)
+}
+
 #cart {
   width: 40px;
   padding: 5px 0;
@@ -338,6 +345,10 @@ select:invalid {
 
 #register {
   background-color: #67baf5;
+}
+
+#logout {
+  background-color: rgb(236, 59, 89);
 }
 
 #history {

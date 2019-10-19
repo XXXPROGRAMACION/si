@@ -37,3 +37,25 @@ def add_user(request):
         'bank-account': request.form.get('bank-account')
     })
     json.dump(data, open(os.path.join(app.root_path,'users/users.json'), 'w', encoding="utf-8"), indent=2)
+
+def is_valid(username, password):
+    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+
+    user_data = json.loads(file_data)['users']
+
+    for user in user_data:
+        if user['username'] == username and user['password'] == password:
+            return True
+
+    return False
+
+def get_user(username):
+    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+
+    user_data = json.loads(file_data)['users']
+
+    for user in user_data:
+        if user['username'] == username:
+            return user
+
+    return None

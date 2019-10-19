@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from app import app
-from flask import render_template, request, url_for, redirect, session
+from flask import render_template, request, url_for, redirect, session, flash
 from app.utils import *
 import json
 import os
@@ -31,18 +31,38 @@ def movie_detail(movie_id):
     movie_add_genres_string(movie)
     return render_template('movie-detail.html', movie=movie)
 
-@app.route('/login')
+
+@app.route('/login', methods=['get'])
 def login():
     return render_template('login.html')
+
+
+@app.route('/login', methods=['post'])
+def autenticate():
+    if not is_valid(request.form.get('username'), request.form.get('password')):
+        flash('Usuario o contraseña inválida', 'error')
+        return render_template('login.html')
+    
+    session['user'] = get_user(request.form.get('username'))
+    return redirect(url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
+
 
 @app.route('/register', methods=['get'])
 def register():
     return render_template('register.html')
 
+
 @app.route('/register', methods=['post'])
 def submit_register():
     add_user(request)
-    return render_template('login.html')
+    return redirect(url_for('login'))
+
 
 @app.route('/shopping-history')
 def shopping_history():

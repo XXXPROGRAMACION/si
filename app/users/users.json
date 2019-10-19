@@ -1,5 +1,14 @@
 {
   "users": [
-    
+    {
+      "email": "victor@gmail.com",
+      "username": "Victor123",
+      "password": "12341234",
+      "fullname": "Victor",
+      "lastname": "1234444",
+      "gender": "female",
+      "direction": "12344444",
+      "bank-account": "12344431244"
+    }
   ]
 }

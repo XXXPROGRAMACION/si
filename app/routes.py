@@ -44,12 +44,14 @@ def autenticate():
         return render_template('login.html')
     
     session['user'] = get_user(request.form.get('username'))
+    session.modified = True
     return redirect(url_for('index'))
 
 
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.modified = True
     return redirect(url_for('index'))
 
 
@@ -75,3 +77,7 @@ def submit_register():
 @app.route('/shopping-history')
 def shopping_history():
     return render_template('shopping-history.html')
+
+@app.route('/shopping-cart')
+def shopping_cart():
+    return render_template('shopping-cart.html')

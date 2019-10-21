@@ -113,10 +113,6 @@ select:invalid {
   grid-template-columns: 2fr 3fr;
 }
 
-.row.two-three {
-  grid-template-columns: 2fr 3fr;
-}
-
 .card.movie {
   background-color: white;
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.15);
@@ -286,6 +282,12 @@ select:invalid {
   margin-right: 10px;
 }
 
+.middle-text {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
 .footer {
   padding: 5px 0 7px 0;
 }
@@ -319,6 +321,17 @@ select:invalid {
 .shopping-item .price {
   text-align: right;
   color: #6ABE44;
+}
+
+.shopping-cart-item-info {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  text-align: center;
+  text-anchor: middle;
+}
+
+.shopping-cart-link {
+  font-weight: normal;
 }
 
 .alert {

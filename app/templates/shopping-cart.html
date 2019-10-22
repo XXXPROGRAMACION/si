@@ -8,60 +8,28 @@
     </div>
   </div>
 
-  <div class="card">
-    <a class="row two-three" href="{{ url_for('movie_detail', movie_id=1) }}">
-      <div class="poster-placeholder">
-        <img src="./static/media/posters/1.jpg" alt="taxi-driver">
-      </div>
-      <div class="shopping-cart-item-info">
-        <h1 class="middle-text">Taxi Driver</h1>
-        <h1 class="price">4.95€</h1>
-      </div>
-    </a>
-  </div>
-
-
-  <a class="container shopping-cart-link" href="{{ url_for('movie_detail', movie_id=1) }}">
-    <div class="card first row no-gap detail">
-      <div class="poster-placeholder">
-          <img src="./static/media/posters/1.jpg" alt="taxi-driver">
-      </div>
-      <div class="info">
-        <div class="content">
-          <h1>Taxi Driver</h1>
-        </div>
-        <div class="details">
-          <div class="type">Tipo de producto</div>
-          <div class="data">a</div>
-          <div class="type">Título original</div>
-          <div class="data">a</div>
-          <div class="type">Año</div>
-          <div class="data">a</div>
-          <div class="type">Dirección</div>
-          <div class="data">a</div>
-          <div class="type">Duración</div>
-          <div class="data">a min.</div>
-          <div class="type">Géneros</div>
-          <div class="data">a</div>
-        </div>
-      </div>
+  {% if not movies %}
+    <div class="content">
+      <h2 class="empty-cart-message">Carrito vacío...</h2>
     </div>
-  </a>
-
+  {% endif %}
   {% for movie in movies %}
     <div class="card">
-      <div class="content">
-        <a class="card row shopping-cart-item" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-          <div class="poster-placeholder">
+        <div class="row shopping-cart-link">
+          <a class="poster-placeholder" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
             <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
+          </a>
+          <div class="shopping-cart-item-info">
+            <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+              <h1>{{ movie.title }} ({{ movie.year }})</h1>
+            </a>
+            <div class="price-and-remove">
+              <h1 class="price right-text">Precio:<br>{{ movie.price }}€</h1>
+              <a class="remove-button" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">Eliminar del carrito</a>
+            </div>
           </div>
-          <div class="content">
-            <h1>{{ movie.title }}</h1>
-            <h1 class="price">{{ movie.price }}€</h1>
-          </div>
-        </a>
+        </div>
       </div>
-    </div>
   {% endfor %}
 </div>
 {% endblock %}

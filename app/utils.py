@@ -24,6 +24,16 @@ def movie_add_genres_string(movie):
     return movie
 
 
+def load_movie(movie_id):
+    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies = json.loads(movies_data)['movies']
+    movie = next(filter(lambda x : x["id"] == movie_id, movies), None)
+    movie_add_poster(movie)
+    movie_add_genres_string(movie)
+
+    return movie
+
+
 def add_user(request):
     file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
 

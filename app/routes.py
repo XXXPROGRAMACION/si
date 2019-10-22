@@ -24,12 +24,17 @@ def index():
 
 @app.route('/movie-detail/<int:movie_id>')
 def movie_detail(movie_id):
-    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
-    movies = json.loads(movies_data)['movies']
-    movie = next(filter(lambda x : x["id"] == movie_id, movies), None)
-    movie_add_poster(movie)
-    movie_add_genres_string(movie)
-    return render_template('movie-detail.html', movie=movie)
+    return render_template('movie-detail.html', movie=load_movie(movie_id))
+
+
+@app.route('/add-to-cart/<int:movie_id>')
+def add_to_cart(movie_id):
+    if session.get('cart') is None:
+        session['cart'] = []
+    
+    session['cart'].append(movie_id)
+    session.modified = True
+    return redirect(url_for('shopping_cart'))
 
 
 @app.route('/login', methods=['get'])
@@ -51,6 +56,7 @@ def autenticate():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.pop('cart', None)
     session.modified = True
     return redirect(url_for('index'))
 
@@ -78,6 +84,24 @@ def submit_register():
 def shopping_history():
     return render_template('shopping-history.html')
 
+
 @app.route('/shopping-cart')
 def shopping_cart():
-    return render_template('shopping-cart.html')
+    if session.get('cart') is None:
+        return render_template('shopping-cart.html')
+    
+    shopping_cart_movies = []
+    for movie_id in session['cart']:
+        shopping_cart_movies.append(load_movie(movie_id))
+    
+    return render_template('shopping-cart.html', movies=shopping_cart_movies)
+
+
+@app.route('/remove-from-cart/<int:movie_id>')
+def remove_from_cart(movie_id):
+    if session.get('cart') is None:
+        return redirect(url_for('shopping_cart'))
+
+    session['cart'].remove(movie_id)
+    session.modified = True
+    return redirect(url_for('shopping_cart'))

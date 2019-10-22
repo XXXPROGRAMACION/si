@@ -26,5 +26,9 @@
         </div>
       </div>
     </div>
+    <div class="price-and-add">
+      <h2>Precio: {{ movie.price }}€</h2>
+      <a class="add-to-cart-button" href="{{ url_for('add_to_cart', movie_id=movie.id) }}">Añadir al carrito</a>
+    </div>
   </div>
 {% endblock %}

@@ -11,7 +11,8 @@
       "genres": [
         "crime", 
         "drama"
-      ]
+      ],
+      "price": 4.95
     }, 
     { 
 			"id": 2,
@@ -25,7 +26,8 @@
         "adventure",
         "comedy",
         "horror"
-      ]
+      ],
+      "price": 9.95
     }, 
     { 
 			"id": 3,
@@ -39,7 +41,8 @@
         "adventure",
         "animation",
         "drama"
-      ]
+      ],
+      "price": 3.75
     }, 
     { 
 			"id": 4,
@@ -51,7 +54,8 @@
       "duration": 139,
       "genres": [
         "drama"
-      ]
+      ],
+      "price": 2.95
     }, 
     { 
 			"id": 5,
@@ -64,7 +68,8 @@
       "genres": [
         "adventure",
         "animation"
-      ]
+      ],
+      "price": 7.95
     }, 
     { 
 			"id": 6,
@@ -77,7 +82,8 @@
       "genres": [
         "crime",
         "drama"
-      ]
+      ],
+      "price": 4.95
     }, 
     { 
 			"id": 7,
@@ -90,7 +96,8 @@
       "genres": [
         "adventure",
         "fantasy"
-      ]
+      ],
+      "price": 10.95
     }, 
     { 
 			"id": 8,
@@ -104,7 +111,8 @@
         "action",
         "adventure",
         "comedy"
-      ]
+      ],
+      "price": 14.95
     }
   ]
 }

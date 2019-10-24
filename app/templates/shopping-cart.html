@@ -1,35 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container">
-  <div class="card first">
-    <div class="content">
-      <h1>Carrito de compra</h1>
+  <div class="container">
+    <div class="card first">
+      <div class="content">
+        <h1>Carrito de compra</h1>
+      </div>
     </div>
-  </div>
 
-  {% if not movies %}
-    <div class="content">
-      <h2 class="empty-cart-message">Carrito vacío...</h2>
-    </div>
-  {% endif %}
-  {% for movie in movies %}
-    <div class="card">
-        <div class="row shopping-cart-link">
-          <a class="poster-placeholder" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-            <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
-          </a>
-          <div class="shopping-cart-item-info">
-            <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-              <h1>{{ movie.title }} ({{ movie.year }})</h1>
+    {% if not movies %}
+      <div class="content">
+        <h2 class="empty-cart-message">
+          Tu carrito está vacío :(
+        </h2>
+      </div>
+    {% endif %}
+    {% for movie in movies %}
+      <div class="card shopping-cart-item">
+          <div class="row one-nine no-gap">
+            <a class="poster-placeholder" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+              <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
             </a>
-            <div class="price-and-remove">
-              <h1 class="price right-text">Precio:<br>{{ movie.price }}€</h1>
-              <a class="remove-button" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">Eliminar del carrito</a>
+            <div>
+              <div class="info row four-one">
+                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                  <h1>{{ movie.title }} ({{ movie.year }})</h1>
+                </a>
+                <h1 class="price right-text">{{ movie.price }}€</h1>
+              </div>
+              <a class="remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">Eliminar del carrito</a>
             </div>
           </div>
         </div>
-      </div>
-  {% endfor %}
-</div>
+    {% endfor %}
+  </div>
 {% endblock %}

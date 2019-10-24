@@ -27,7 +27,7 @@ def movie_add_genres_string(movie):
 
 
 def load_movie(movie_id):
-    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies_data = open(os.path.join(app.root_path,'database/catalogue/movies.json'), encoding="utf-8").read()
     movies = json.loads(movies_data)['movies']
     movie = next(filter(lambda x : x["id"] == movie_id, movies), None)
     movie_add_poster(movie)
@@ -37,7 +37,7 @@ def load_movie(movie_id):
 
 
 def add_user(request):
-    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+    file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     data = json.loads(file_data)
 
@@ -51,11 +51,12 @@ def add_user(request):
         'direction': request.form.get('direction'),
         'bank-account': request.form.get('bank-account')
     })
-    json.dump(data, open(os.path.join(app.root_path,'users/users.json'), 'w', encoding="utf-8"), indent=2)
+    
+    json.dump(data, open(os.path.join(app.root_path,'database/users/users.json'), 'w', encoding="utf-8"), indent=2)
 
 
 def is_valid(username, password):
-    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+    file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     user_data = json.loads(file_data)['users']
 
@@ -67,7 +68,7 @@ def is_valid(username, password):
 
 
 def get_user(username):
-    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+    file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     user_data = json.loads(file_data)['users']
 
@@ -79,7 +80,7 @@ def get_user(username):
 
 
 def user_exists(username):
-    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+    file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     user_data = json.loads(file_data)['users']
 
@@ -91,7 +92,7 @@ def user_exists(username):
 
 
 def email_exists(emai):
-    file_data = open(os.path.join(app.root_path,'users/users.json'), 'r', encoding="utf-8").read()
+    file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     user_data = json.loads(file_data)['users']
 
@@ -100,4 +101,3 @@ def email_exists(emai):
             return True
 
     return False
-

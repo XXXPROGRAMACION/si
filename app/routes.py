@@ -74,7 +74,14 @@ def submit_register():
 
 @app.route('/shopping-history')
 def shopping_history():
-    return render_template('shopping-history.html')
+    users_shopping_histories_data = open(os.path.join(app.root_path,'database/users/users_shopping_histories.json'), encoding="utf-8").read()
+    users_shopping_histories = json.loads(users_shopping_histories_data)['users_shopping_histories']
+    shopping_history = users_shopping_histories[session['user']['username']]
+
+    for item in shopping_history:
+        item['movie_title'] = load_movie(item['movie_id'])['title']
+
+    return render_template('shopping-history.html', shopping_history=shopping_history)
 
 
 @app.route('/shopping-cart')
@@ -101,7 +108,7 @@ def remove_from_cart(movie_id):
 
 @app.route('/search')
 def search():
-    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies_data = open(os.path.join(app.root_path,'database/catalogue/movies.json'), encoding="utf-8").read()
     movies = json.loads(movies_data)['movies']
     search_result = []
     
@@ -116,7 +123,7 @@ def search():
 
 @app.route('/latest-movies')
 def latest_movies():
-    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies_data = open(os.path.join(app.root_path,'database/catalogue/movies.json'), encoding="utf-8").read()
     movies = json.loads(movies_data)['movies']
     latest_movies = movies[:4]
 

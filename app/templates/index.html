@@ -5,7 +5,6 @@
     function search() {
       let params = {q: $("#q").val(), genre: $("#genre").val()};
       $("#search-result").load("{{ url_for('search') }}" + "?" + $.param(params));
-      console.log("{{ url_for('search') }}" + "?" + $.param(params));
       return false;
     }
 
@@ -35,8 +34,9 @@
             <div class="content">
               <div class="row movie-search-params">
                 <input type="text" id="q" placeholder="Búsqueda..."/>
-                <select id="genre">
+                <select id="genre" onchange="search()">
                   <option value="" selected disabled hidden>Categoría</option>
+                  <option value="">Cualquiera</option>
                   <option value="action">Acción</option>
                   <option value="animation">Animación</option>
                   <option value="adventure">Aventura</option>

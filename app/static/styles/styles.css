@@ -32,7 +32,7 @@ p {
 }
 
 header {
-  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.25);
   background-color: #ffda74;
 }
 
@@ -41,7 +41,7 @@ footer {
   right: 0;
   bottom: 0;
   left: 0;
-  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.25);
   background-color: #ffda74;
 }
 
@@ -60,7 +60,7 @@ select:invalid {
 .card {
   margin-top: 10px;
   background-color: white;
-  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
 }
 
@@ -113,9 +113,13 @@ select:invalid {
   grid-template-columns: 2fr 3fr;
 }
 
+.row.four-one {
+  grid-template-columns: 4fr 1fr;
+}
+
 .card.movie {
   background-color: white;
-  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.25);
   border-radius: 0 0 4px 4px;
 }
 
@@ -123,8 +127,11 @@ select:invalid {
   padding: 10px;
 }
 
-.card.movie .content .title {
+.card.movie .content h1 {
   font-size: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .poster-placeholder {
@@ -213,15 +220,24 @@ select:invalid {
 
 .info {
   background-color: #DCDCDC;
+  border-radius: 0 4px 4px 0;
 }
 
 .info .content {
   padding: 20px;
+  border-radius: 0 4px 0 0;
   background-color: white;
 }
 
 .info .content h1 {
   font-size: 32px;
+}
+
+.info .content h2 {
+  margin-top: 4px;
+  text-align: right;
+  font-size: 26px;
+  color: #6ABE44;
 }
 
 .info .details {
@@ -325,28 +341,23 @@ select:invalid {
   color: #6ABE44;
 }
 
-.price-and-add {
+.price-and-add {  
   display: flex;
-  flex-direction: column;
-  column-gap: 15px;
-  margin-top: 30px;
-  margin-left: 60%;
-  text-align: center;
-  justify-content: center;
-  background-color: rgb(202, 202, 202);
-  padding: 15px;
-  border-radius: 4px;
+  justify-content: end;
+  align-items: center;
+  margin-top: 20px;
 }
 
-.price-and-add .add-to-cart-button {
-  font-size: 20px;
-  background-color: #46DF6F;
-  text-align: center;
-  align-items: center;
-  height: 100%;
-  margin-top: 10px;
-  padding: 10px 20px 10px 20px;
+.price-and-add h2 {
+  margin-right: 20px;
+}
+
+.price-and-add a {
+  padding: 15px 20px;
   border-radius: 4px;
+  box-shadow: 0 0 3px 2px rgba(0, 0, 0, 0.25);
+  background-color: #46DF6F;
+  font-size: 18px;
 }
 
 .shopping-cart-item-info {

@@ -9,6 +9,16 @@
       "gender": "female",
       "direction": "12344444",
       "bank-account": "12344431244"
+    },
+    {
+      "email": "pascualex.22@gmail.com",
+      "username": "Pascualex",
+      "password": "123123",
+      "fullname": "Alejandro",
+      "lastname": "Pascual Pozo",
+      "gender": "other",
+      "direction": "Av. Monasterio de Silos, 44",
+      "bank-account": "1234123412341234"
     }
   ]
 }

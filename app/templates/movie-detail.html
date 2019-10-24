@@ -8,7 +8,10 @@
       </div>
       <div class="info">
         <div class="content">
-          <h1>{{ movie.title }}</h1>
+          <div class="row four-one">
+            <h1>{{ movie.title }}</h1>
+            <h2>{{ movie.price }}€</h2>
+          </div>
         </div>
         <div class="details">
           <div class="type">Tipo de producto</div>
@@ -27,8 +30,7 @@
       </div>
     </div>
     <div class="price-and-add">
-      <h2>Precio: {{ movie.price }}€</h2>
-      <a class="add-to-cart-button" href="{{ url_for('add_to_cart', movie_id=movie.id) }}">Añadir al carrito</a>
+      <a href="{{ url_for('add_to_cart', movie_id=movie.id) }}">Añadir al carrito</a>
     </div>
   </div>
 {% endblock %}

@@ -3,10 +3,12 @@ import json
 import os
 
 def movie_filter(movie, q, genre):
-    if q is not None and q not in movie['title'] and q not in movie['original_title']:
+    q = q.lower()
+
+    if q is not None and q not in movie['title'].lower() and q not in movie['original_title'].lower():
         return False
 
-    if genre is not None and genre not in movie['genres']:
+    if genre is not None and len(genre) is not 0 and genre not in movie['genres']:
         return False
 
     return True

@@ -10,16 +10,8 @@ import sys
 
 
 @app.route('/')
-def index():
-    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
-    movies = json.loads(movies_data)['movies']
-    search_result = []
-    
-    for movie in movies:
-        if movie_filter(movie, request.args.get('q'), request.args.get('genre')):
-            search_result.append(movie_add_poster(movie))
-            
-    return render_template('index.html', search_result=search_result)
+def index():            
+    return render_template('index.html')
 
 
 @app.route('/movie-detail/<int:movie_id>')
@@ -105,3 +97,30 @@ def remove_from_cart(movie_id):
     session['cart'].remove(movie_id)
     session.modified = True
     return redirect(url_for('shopping_cart'))
+
+
+@app.route('/search')
+def search():
+    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies = json.loads(movies_data)['movies']
+    search_result = []
+    
+    for movie in movies:
+        if movie_filter(movie, request.args.get('q'), request.args.get('genre')):
+            search_result.append(movie_add_poster(movie))
+
+    search_result.sort(key=lambda x: x['title'])
+
+    return render_template('search-result.html', search_result=search_result)
+
+
+@app.route('/latest-movies')
+def latest_movies():
+    movies_data = open(os.path.join(app.root_path,'catalogue/movies.json'), encoding="utf-8").read()
+    movies = json.loads(movies_data)['movies']
+    latest_movies = movies[:4]
+
+    for movie in latest_movies:
+        movie_add_poster(movie)
+
+    return render_template('search-result.html', search_result=latest_movies)

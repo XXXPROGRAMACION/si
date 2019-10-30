@@ -14,8 +14,8 @@
           Tu carrito está vacío :(
         </h2>
       </div>
-    {% endif %}
-    {% for movie in movies %}
+    {% else %}
+      {% for movie in movies %}
       <div class="card shopping-cart-item">
           <div class="row one-nine no-gap">
             <a class="poster-placeholder" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
@@ -32,6 +32,11 @@
             </div>
           </div>
         </div>
-    {% endfor %}
-  </div>
+      {% endfor %}
+      <div class="checkout">
+        <h2>Total: {{ total }}€</h2>
+        <a class="checkout-button" href="">Terminar compra</a>
+      </div>
+    {% endif %}
+  </div>    
 {% endblock %}

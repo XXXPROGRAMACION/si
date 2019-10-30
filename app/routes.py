@@ -89,11 +89,14 @@ def shopping_cart():
     if session.get('cart') is None:
         return render_template('shopping-cart.html')
     
+    total = 0
     shopping_cart_movies = []
     for movie_id in session['cart']:
-        shopping_cart_movies.append(load_movie(movie_id))
+        movie = load_movie(movie_id)
+        shopping_cart_movies.append(movie)
+        total += movie['price']
     
-    return render_template('shopping-cart.html', movies=shopping_cart_movies)
+    return render_template('shopping-cart.html', movies=shopping_cart_movies, total=total)
 
 
 @app.route('/remove-from-cart/<int:movie_id>')

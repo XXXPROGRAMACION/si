@@ -1,0 +1,119 @@
+{
+    "movies": [ 
+      { 
+              "id": 1,
+              "title": "Taxi Driver",
+        "type": "DVD",
+        "original_title": "Taxi Driver",
+        "year": 1976,
+        "director": "Martin Scorsese",
+        "duration": 113,
+        "genres": [
+          "crime", 
+          "drama"
+        ],
+        "price": 4.95
+      }, 
+      { 
+              "id": 2,
+              "title": "Zombieland",
+        "type": "Blu-ray",
+        "original_title": "Zombieland",
+        "year": 2009,
+        "director": "Ruben Fleischer",
+        "duration": 88,
+        "genres": [
+          "adventure",
+          "comedy",
+          "horror"
+        ],
+        "price": 9.95
+      }, 
+      { 
+              "id": 3,
+              "title": "El Rey León",
+        "type": "DVD",
+        "original_title": "The Lion King",
+        "year": 2019,
+        "director": "Jon Favreau",
+        "duration": 118,
+        "genres": [
+          "adventure",
+          "animation",
+          "drama"
+        ],
+        "price": 3.75
+      }, 
+      { 
+              "id": 4,
+              "title": "El Club de la Lucha",
+        "type": "DVD",
+        "original_title": "Fight Club",
+        "year": 1999,
+        "director": "David Fincher",
+        "duration": 139,
+        "genres": [
+          "drama"
+        ],
+        "price": 2.95
+      }, 
+      { 
+              "id": 5,
+              "title": "Coco",
+        "type": "Blu-ray",
+        "original_title": "Coco",
+        "year": 2017,
+        "director": "Lee Unkrich",
+        "duration": 105,
+        "genres": [
+          "adventure",
+          "animation"
+        ],
+        "price": 7.95
+      }, 
+      { 
+              "id": 6,
+              "title": "Pulp Fiction",
+        "type": "DVD",
+        "original_title": "Pulp Fiction",
+        "year": 1994,
+        "director": "Quentin Tarantino",
+        "duration": 154,
+        "genres": [
+          "crime",
+          "drama"
+        ],
+        "price": 4.95
+      }, 
+      { 
+              "id": 7,
+              "title": "Harry Potter III",
+        "type": "DVD",
+        "original_title": "Harry Potter and the Prisoner of Azkaban",
+        "year": 2004,
+        "director": "Alfonso Cuarón",
+        "duration": 142,
+        "genres": [
+          "adventure",
+          "fantasy"
+        ],
+        "price": 10.95
+      }, 
+      { 
+              "id": 8,
+              "title": "Sharknado II",
+        "type": "Blu-ray",
+        "original_title": "Sharknado II",
+        "year": 2014,
+        "director": "Anthony C. Ferrante",
+        "duration": 95,
+        "genres": [
+          "action",
+          "adventure",
+          "comedy"
+        ],
+        "price": 14.95
+      }
+    ]
+  }
+  

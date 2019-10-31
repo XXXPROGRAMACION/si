@@ -2,6 +2,24 @@
 
 {% block imports %}
   <script src="{{ url_for('static', filename='scripts/RegisterValidation.js') }}"></script>
+  <script>
+    $(document).ready(() => {
+      $('#password').on('input', function() {
+        let password = $("#password");
+        let hasNumber = /\d/;
+        let hasLetter = /\D/;
+        if (password.val().length === 0) {
+          password.css("background-color", "#ececec");
+        } else if (password.val().length < 7) {
+          password.css("background-color", "#d46868");
+        } else if (!hasNumber.test(password.val()) || !hasLetter.test(password.val())) {
+          password.css("background-color", "#edd98a");
+        } else {
+          password.css("background-color", "#7ff59f");
+        }
+      });
+    });
+  </script>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +38,7 @@
               <input class="first" type="email" name="email" placeholder="Correo electrónico" required/>
               <input type="text" name="username" placeholder="Nombre de usuario" minlength="6" maxlength="20" required/>
               <div class="row">
-                <input type="password" name="password" placeholder="Contraseña" minlength="6" maxlength="20" required/>
+                <input id="password" type="password" name="password" placeholder="Contraseña" minlength="6" maxlength="20" required/>
                 <input type="password" name="passwordCheck" placeholder="Repetir contraseña" maxlength="20" required/>
               </div>
             </div>

@@ -1,6 +1,8 @@
 from app import app
 import json
 import os
+from datetime import date
+
 
 def movie_filter(movie, q, genre):
     q = q.lower()
@@ -91,13 +93,33 @@ def user_exists(username):
     return False
 
 
-def email_exists(emai):
+def email_exists(email):
     file_data = open(os.path.join(app.root_path,'database/users/users.json'), 'r', encoding="utf-8").read()
 
     user_data = json.loads(file_data)['users']
 
     for user in user_data:
-        if user['email'] == emai:
+        if user['email'] == email:
             return True
 
     return False
+
+
+def process_payment(username, movies, total):
+    file_data = open(os.path.join(app.root_path,'database/users/users_shopping_histories.json'), 'r', encoding="utf-8").read()
+
+    data = json.loads(file_data)
+
+    today = date.today()
+    # dd/mm/YY
+    date_str = today.strftime("%d/%m/%Y")
+
+    for movie in movies:
+        data['users_shopping_histories'][username].insert(0, {
+            'movie_id': movie['id'],
+            "date": date_str,
+            "price": movie['price']
+        })
+    
+    json.dump(data, open(os.path.join(app.root_path,'database/users/users_shopping_histories.json'), 'w', encoding="utf-8"), indent=2)
+

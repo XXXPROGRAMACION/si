@@ -6,7 +6,9 @@
       <div class="content">
         <div class="row four-one">
           <h1>Carrito de compra</h1>
-          <h1 class="price">Total: {{ total }}€</h2>
+          {% if movies %}
+            <h1 class="price">Total: {{ total }}€</h2>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -24,21 +26,27 @@
             <a class="poster-placeholder crop" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
               <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
             </a>
-            <div class="info row">
-              <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-                <h1>{{ movie.title }} ({{ movie.year }})</h1>
-              </a>
-              <h1 class="price right-text">{{ movie.price }}€</h1>
-              <div></div>
-              <a class="remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">
-                Eliminar
-              </a>
+            <div class="info">
+              <div class="content">
+                <a class="top left" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                  <h1>{{ movie.title }} ({{ movie.year }})</h1>
+                </a>
+                <h1 class="top right price">{{ movie.price }}€</h1>
+                <h2 class="bottom left">Cantidad: {{ movie.units }}</h2>
+                <a class="bottom right remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">
+                  Eliminar
+                </a>
+              </div>
             </div>
           </div>
         </div>
       {% endfor %}
       <div class="checkout-bar">
-        <a href="">Terminar compra</a>
+        {% if session.user %}
+          <a href="{{ url_for('checkout') }}">Terminar compra</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Inicia sesión para finalizar la compra</a>
+        {% endif %}
       </div>
     {% endif %}
   </div>    

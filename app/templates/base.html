@@ -20,15 +20,21 @@
             <div class="buttons">
               <a id="cart" href="{{ url_for('shopping_cart')}}">
                 <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
+                {% if session.cart_size and session.cart_size %}
+                  <div><p>{{ session.cart_size }}</p></div>
+                {% endif %}
               </a>
               <a id="login" href="{{ url_for('login') }}">Iniciar sesión</a>
               <a id="register" href="{{ url_for('register') }}">Registro</a>
             </div>
           {% else %}
-          Bienvenido, {{ session.user.fullname }}
             <div class="buttons">
+              <h2>{{ session.user.fullname }}</h2>
               <a id="cart" href="{{ url_for('shopping_cart')}}">
                 <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
+                {% if session.cart_size and session.cart_size %}
+                  <div><p>{{ session.cart_size }}</p></div>
+                {% endif %}
               </a>
               <a id="history" href="{{ url_for('shopping_history') }}">Historial</a>
               <a id="logout" href="{{ url_for('logout') }}">Cerrar sesión</a>

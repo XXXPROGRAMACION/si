@@ -111,8 +111,6 @@ def shopping_history():
             current_month["movies"].append(movie)
         last_date = date
 
-    print("Longitud: " + str(len(shopping_history["months"][0]["movies"])))
-
     return render_template("shopping-history.html", shopping_history=shopping_history)
 
 

@@ -4,7 +4,10 @@
   <div class="container">
     <div class="card first">
       <div class="content">
-        <h1>Carrito de compra</h1>
+        <div class="row four-one">
+          <h1>Carrito de compra</h1>
+          <h1 class="price">Total: {{ total }}€</h2>
+        </div>
       </div>
     </div>
 
@@ -17,25 +20,25 @@
     {% else %}
       {% for movie in movies %}
       <div class="card shopping-cart-item">
-          <div class="row one-nine no-gap">
-            <a class="poster-placeholder" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+          <div class="row one-three no-gap">
+            <a class="poster-placeholder crop" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
               <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
             </a>
-            <div>
-              <div class="info row four-one">
-                <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-                  <h1>{{ movie.title }} ({{ movie.year }})</h1>
-                </a>
-                <h1 class="price right-text">{{ movie.price }}€</h1>
-              </div>
-              <a class="remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">Eliminar del carrito</a>
+            <div class="info row">
+              <a href="{{ url_for('movie_detail', movie_id=movie.id) }}">
+                <h1>{{ movie.title }} ({{ movie.year }})</h1>
+              </a>
+              <h1 class="price right-text">{{ movie.price }}€</h1>
+              <div></div>
+              <a class="remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">
+                Eliminar
+              </a>
             </div>
           </div>
         </div>
       {% endfor %}
-      <div class="checkout">
-        <h2>Total: {{ total }}€</h2>
-        <a class="checkout-button" href="">Terminar compra</a>
+      <div class="checkout-bar">
+        <a href="">Terminar compra</a>
       </div>
     {% endif %}
   </div>    

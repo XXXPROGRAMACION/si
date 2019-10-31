@@ -1,2 +1,6 @@
 .vscode
+.idea
+silpyenv
 si1pyenv
+app/thesessions
+app/__pycache__

@@ -99,6 +99,25 @@ def shopping_cart():
     return render_template('shopping-cart.html', movies=shopping_cart_movies, total=total)
 
 
+@app.route('/checkout')
+def checkout():
+    if session.get('cart') is None or session.get('user') is None:
+        return redirect(url_for('shopping_cart'))
+    
+    total = 0
+    shopping_cart_movies = []
+    for movie_id in session['cart']:
+        movie = load_movie(movie_id)
+        shopping_cart_movies.append(movie)
+        total += movie['price']
+
+    process_payment(session.get('user')['username'], shopping_cart_movies, total)
+    session.pop('cart', None)
+    session.modified = True
+    
+    return redirect(url_for('shopping_history'))
+
+
 @app.route('/remove-from-cart/<int:movie_id>')
 def remove_from_cart(movie_id):
     if session.get('cart') is None:

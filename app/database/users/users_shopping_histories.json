@@ -1,21 +1,31 @@
 {
-    "users_shopping_histories": {
-        "Victor123": [  
-            {
-                "movie_id": 3,
-                "date": "24/10/2019",
-                "price": 4.95
-            },
-            {
-                "movie_id": 2,
-                "date": "14/10/2019",
-                "price": 2.95
-            },
-            {
-                "movie_id": 7,
-                "date": "14/10/2019",
-                "price": 14.95
-            }
-        ]
-    }
+  "users_shopping_histories": {
+    "Victor123": [
+      {
+        "movie_id": 6,
+        "date": "31/10/2019",
+        "price": 4.95
+      },
+      {
+        "movie_id": 3,
+        "date": "31/10/2019",
+        "price": 3.75
+      },
+      {
+        "movie_id": 3,
+        "date": "24/10/2019",
+        "price": 4.95
+      },
+      {
+        "movie_id": 2,
+        "date": "14/10/2019",
+        "price": 2.95
+      },
+      {
+        "movie_id": 7,
+        "date": "14/10/2019",
+        "price": 14.95
+      }
+    ]
+  }
 }

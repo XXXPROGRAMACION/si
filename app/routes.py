@@ -66,6 +66,7 @@ def autenticate():
 def logout():
     session.pop("user", None)
     session.pop("cart", None)
+    session.pop("cart_size", None)
     session.modified = True
     return redirect(url_for("index"))
 
@@ -93,10 +94,24 @@ def submit_register():
 def shopping_history():
     users_shopping_histories_data = open(os.path.join(app.root_path,"database/users/users_shopping_histories.json"), encoding="utf-8").read()
     users_shopping_histories = json.loads(users_shopping_histories_data)["users_shopping_histories"]
-    shopping_history = users_shopping_histories[session["user"]["username"]]
+    shopping_history_raw = users_shopping_histories[session["user"]["username"]]
+    shopping_history = { "months": [] }
 
-    for item in shopping_history:
-        item["movie_title"] = load_movie(item["movie_id"])["title"]
+    last_date = ["0", "0", "0"]
+    current_month = None
+    for movie in shopping_history_raw:
+        movie["movie_title"] = load_movie(movie["movie_id"])["title"]
+        date = movie["date"].split("/")
+        if date[1] != last_date[1] or date[2] != last_date[2]:
+            month_id = date[1] + "-" + date[2]
+            month_name = get_month_string(date[1], date[2])
+            current_month = { "id": month_id, "name": month_name, "movies": [movie] }
+            shopping_history["months"].append(current_month)
+        else:
+            current_month["movies"].append(movie)
+        last_date = date
+
+    print("Longitud: " + str(len(shopping_history["months"][0]["movies"])))
 
     return render_template("shopping-history.html", shopping_history=shopping_history)
 

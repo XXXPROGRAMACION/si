@@ -126,3 +126,33 @@ def process_payment(username, movies, total):
     
     json.dump(data, open(os.path.join(app.root_path,"database/users/users_shopping_histories.json"), "w", encoding="utf-8"), indent=2)
 
+
+def get_month_string(month, year):
+    month_value = int(month)
+    month_name = "Error"
+    if month_value == 1:
+        month_name = "Enero"
+    elif month_value == 2:
+        month_name = "Febrero"
+    elif month_value == 3:
+        month_name = "Marzo"
+    elif month_value == 4:
+        month_name = "Abril"
+    elif month_value == 5:
+        month_name = "Mayo"
+    elif month_value == 6:
+        month_name = "Junio"
+    elif month_value == 7:
+        month_name = "Julio"
+    elif month_value == 8:
+        month_name = "Agosto"
+    elif month_value == 9:
+        month_name = "Septiembre"
+    elif month_value == 10:
+        month_name = "Octubre"
+    elif month_value == 11:
+        month_name = "Noviembre"
+    elif month_value == 12:
+        month_name = "Diciembre"
+
+    return month_name + " de " + year

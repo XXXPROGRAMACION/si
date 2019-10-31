@@ -345,8 +345,9 @@ select:invalid {
   text-align: center;
 }
 
-.right-text {
-  text-align: right;
+.align-right {
+  display: flex;
+  flex-direction: row-reverse;
 }
 
 .footer {
@@ -428,6 +429,10 @@ select:invalid {
   padding: 15px;
   padding-left: 30px;
   background-color: rgb(247, 139, 136)
+}
+
+.hide {
+  display: none;
 }
 
 #cart {

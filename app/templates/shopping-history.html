@@ -1,5 +1,21 @@
 {% extends "base.html" %}
 
+{% block imports %}
+  <script>
+    function showMonth(id) {
+      $("#" + id + "-show-button").addClass("hide");
+      $("#" + id + "-hide-button").removeClass("hide");
+      $("#" + id + "-movies").removeClass("hide");
+    }
+
+    function hideMonth(id) {
+      $("#" + id + "-show-button").removeClass("hide");
+      $("#" + id + "-hide-button").addClass("hide");
+      $("#" + id + "-movies").addClass("hide");
+    }
+  </script>
+{% endblock %}
+
 {% block content %}
   <div class="container">
     <div class="card first">
@@ -8,20 +24,43 @@
       </div>
     </div>
     {% if not shopping_history %}
-      Debug: no hay una sesión iniciada
+      <div class="content">
+        <h2 class="empty-cart-message">
+          Debug: no hay una sesión iniciada
+        </h2>
+      </div>
     {% elif shopping_history|length == 0 %}
-      Tu historial está vacío.
+      <div class="content">
+        <h2 class="empty-cart-message">
+          Tu historial está vacío :(
+        </h2>
+      </div>
     {% else %}
-      {% for item in shopping_history %}
+      {% for month in shopping_history.months %}
         <div class="card">
           <div class="content">
-            <div class="row shopping-item">
-              <div class="dot"></div>
-              <h1>{{ item.movie_title }}</h1>
-              <h1>{{ item.date }}</h1>
-              <h1 class="price">{{ item.price }}€</h1>
+            <div class="row four-one">
+              <h1>{{ month.name }}</h1>
+              <div class="align-right">
+                <a id="{{ month.id }}-show-button" onclick="showMonth('{{ month.id }}')"><h1>➕</h1></a>
+                <a id="{{ month.id }}-hide-button" class="hide" onclick="hideMonth('{{ month.id }}')"><h1>➖</h1></a>
+              </div>
             </div>
           </div>
+        </div>
+        <div id="{{ month.id }}-movies" class="hide">
+          {% for movie in month.movies %}
+            <div class="card">
+              <div class="content">
+                <div class="row shopping-item">
+                  <div class="dot"></div>
+                  <h1>{{ movie.movie_title }}</h1>
+                  <h1>{{ movie.date }}</h1>
+                  <h1 class="price">{{ movie.price }}€</h1>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
         </div>
       {% endfor %}
     {% endif %}

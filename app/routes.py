@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from app import app
+from app import database
 from flask import render_template, request, url_for, redirect, session, flash
 from app.utils import *
 import json
@@ -16,7 +17,7 @@ def index():
 
 @app.route("/search")
 def search():
-    movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
+    """ movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
     movies = json.loads(movies_data)["movies"]
     search_result = []
     
@@ -24,26 +25,30 @@ def search():
         if movie_filter(movie, request.args.get("q"), request.args.get("genre")):
             search_result.append(movie_add_poster(movie))
 
-    search_result.sort(key=lambda x: x["title"])
+    search_result.sort(key=lambda x: x["title"]) """
 
-    return render_template("search-result.html", search_result=search_result)
+    search_result = database.search_movie(request.args.get("q"))
+    #search_result = database.latest_movies(10)
+    return render_template("search-result-db.html", search_result=search_result)
 
 
 @app.route("/latest-movies")
 def latest_movies():
-    movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
+    """ movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
     movies = json.loads(movies_data)["movies"]
     latest_movies = movies[:4]
 
     for movie in latest_movies:
-        movie_add_poster(movie)
+        movie_add_poster(movie) """
 
-    return render_template("search-result.html", search_result=latest_movies)
+    latest_movies = database.latest_movies(4)
+
+    return render_template("search-result-db.html", search_result=latest_movies)
 
 
 @app.route("/movie-detail/<int:movie_id>")
 def movie_detail(movie_id):
-    return render_template("movie-detail.html", movie=load_movie(movie_id))
+    return render_template("movie-detail.html", movie=database.load_movie(movie_id))
 
 
 @app.route("/login", methods=["get"])
@@ -180,3 +185,9 @@ def checkout():
     session.modified = True
     
     return redirect(url_for("shopping_history"))
+
+
+@app.route('/list-of-movies')
+def listOfMovies():
+    movies_1949 = database.db_listOfMovies1949()
+    return render_template('list_movies.html', title = "Movies from Postgres Database", movies_1949 = movies_1949)

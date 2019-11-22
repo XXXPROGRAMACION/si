@@ -1,0 +1,15 @@
+<div class="movie-grid">
+  {% for movie in search_result %}
+    {% if not movie is string %}
+    <a class="card movie" href="{{ url_for('movie_detail', movie_id=movie.movieid) }}">
+      <div class="poster-placeholder">
+      </div>
+      <div class="content">
+        <h1>{{ movie.movietitle }}</h1>
+      </div>
+    </a>
+    {% else %}
+    {{ movie }}
+    {% endif %}
+  {% endfor %}
+</div>

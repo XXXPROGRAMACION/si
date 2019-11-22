@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+  {% if not movie is string %}
   <div class="container">
     <div class="card first row no-gap detail">
       <div class="poster-placeholder">
@@ -9,7 +10,7 @@
       <div class="info">
         <div class="content">
           <div class="row four-one">
-            <h1>{{ movie.title }}</h1>
+            <h1>{{ movie.movietitle }}</h1>
             <h2>{{ movie.price }}€</h2>
           </div>
         </div>
@@ -17,7 +18,7 @@
           <div class="type">Tipo de producto</div>
           <div class="data">{{ movie.type }}</div>
           <div class="type">Título original</div>
-          <div class="data">{{ movie.original_title }}</div>
+          <div class="data">{{ movie.movietitle }}</div>
           <div class="type">Año</div>
           <div class="data">{{ movie.year }}</div>
           <div class="type">Dirección</div>
@@ -30,7 +31,10 @@
       </div>
     </div>
     <div class="checkout-bar">
-      <a href="{{ url_for('add_to_cart', movie_id=movie.id) }}">Añadir al carrito</a>
+      <a href="{{ url_for('add_to_cart', movie_id=movie.movieid) }}">Añadir al carrito</a>
     </div>
   </div>
+  {% else %}
+  {{ movie }}
+  {% endif %}
 {% endblock %}

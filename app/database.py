@@ -42,7 +42,7 @@ def latest_movies(amount):
         db_conn = None
         db_conn = db_engine.connect()
         
-        db_result = db_conn.execute("SELECT * FROM imdb_movies ORDER BY year DESC LIMIT " + str(amount))
+        db_result = db_conn.execute("SELECT * FROM imdb_movies AS m JOIN products AS p ON m.movieid=p.movieid ORDER BY year DESC LIMIT " + str(amount))
         
         db_conn.close()
         
@@ -58,17 +58,15 @@ def latest_movies(amount):
         return 'Something is broken'
 
 
-def search_movie(title, amount=50):
+def search_product(title, amount=50):
     try:
         db_conn = None
         db_conn = db_engine.connect()
 
         if title is None:
-            db_result = db_conn.execute("SELECT * FROM imdb_movies LIMIT " + str(amount))
+            db_result = db_conn.execute("SELECT * FROM imdb_movies AS m JOIN products AS p ON m.movieid=p.movieid LIMIT " + str(amount))
         else:
-            db_result = db_conn.execute("SELECT * FROM imdb_movies AS m WHERE m.movietitle LIKE \'%%" + title + "%%\' LIMIT " + str(amount))
-
-        
+            db_result = db_conn.execute("SELECT * FROM imdb_movies AS m JOIN products AS p ON m.movieid=p.movieid WHERE m.movietitle LIKE \'%%" + title + "%%\' LIMIT " + str(amount))
         
         db_conn.close()
         
@@ -84,12 +82,12 @@ def search_movie(title, amount=50):
         return 'Something is broken'
 
 
-def load_movie(movie_id):
+def load_product(product_id):
     try:
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT * FROM imdb_movies AS m WHERE m.movieid=" + str(movie_id) + " LIMIT 1")
+        db_result = db_conn.execute("SELECT * FROM imdb_movies AS m JOIN products AS p ON m.movieid=p.movieid WHERE p.prod_id=" + str(product_id) + " LIMIT 1")
         
         db_conn.close()
         

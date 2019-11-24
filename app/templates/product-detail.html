@@ -1,40 +1,40 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if not movie is string %}
+  {% if not product is string %}
   <div class="container">
     <div class="card first row no-gap detail">
       <div class="poster-placeholder">
-        <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
+        <img src={{ product.poster }} alt={{ product.poster_alt }}>
       </div>
       <div class="info">
         <div class="content">
           <div class="row four-one">
-            <h1>{{ movie.movietitle }}</h1>
-            <h2>{{ movie.price }}€</h2>
+            <h1>{{ product.movietitle[:-6] }}</h1>
+            <h2>{{ product.price }}€</h2>
           </div>
         </div>
         <div class="details">
           <div class="type">Tipo de producto</div>
-          <div class="data">{{ movie.type }}</div>
+          <div class="data">{{ product.description }}</div>
           <div class="type">Título original</div>
-          <div class="data">{{ movie.movietitle }}</div>
+          <div class="data">{{ product.movietitle[:-6] }}</div>
           <div class="type">Año</div>
-          <div class="data">{{ movie.year }}</div>
+          <div class="data">{{ product.year }}</div>
           <div class="type">Dirección</div>
-          <div class="data">{{ movie.director }}</div>
+          <div class="data">{{ product.director }}</div>
           <div class="type">Duración</div>
-          <div class="data">{{ movie.duration }} min.</div>
+          <div class="data">{{ product.duration }} min.</div>
           <div class="type">Géneros</div>
-          <div class="data">{{ movie.genres_string }}</div>
+          <div class="data">{{ product.genres_string }}</div>
         </div>
       </div>
     </div>
     <div class="checkout-bar">
-      <a href="{{ url_for('add_to_cart', movie_id=movie.movieid) }}">Añadir al carrito</a>
+      <a href="{{ url_for('add_to_cart', product_id=product.prod_id) }}">Añadir al carrito</a>
     </div>
   </div>
   {% else %}
-  {{ movie }}
+  {{ product }}
   {% endif %}
 {% endblock %}

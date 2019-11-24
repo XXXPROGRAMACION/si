@@ -27,7 +27,7 @@ def search():
 
     search_result.sort(key=lambda x: x["title"]) """
 
-    search_result = database.search_movie(request.args.get("q"))
+    search_result = database.search_product(request.args.get("q"))
     #search_result = database.latest_movies(10)
     return render_template("search-result-db.html", search_result=search_result)
 
@@ -46,9 +46,9 @@ def latest_movies():
     return render_template("search-result-db.html", search_result=latest_movies)
 
 
-@app.route("/movie-detail/<int:movie_id>")
-def movie_detail(movie_id):
-    return render_template("movie-detail.html", movie=database.load_movie(movie_id))
+@app.route("/product-detail/<int:product_id>")
+def product_detail(product_id):
+    return render_template("product-detail.html", product=database.load_product(product_id))
 
 
 @app.route("/login", methods=["get"])
@@ -137,9 +137,9 @@ def shopping_cart():
     return render_template("shopping-cart.html", movies=shopping_cart_movies, total=total)
 
 
-@app.route("/add-to-cart/<int:movie_id>")
-def add_to_cart(movie_id):
-    if session.get("cart") is None:
+@app.route("/add-to-cart/<int:product_id>")
+def add_to_cart(product_id):
+    """ if session.get("cart") is None:
         session["cart"] = {}
         session["cart_size"] = 0
     
@@ -150,7 +150,7 @@ def add_to_cart(movie_id):
 
     session["cart_size"] += 1
     session.modified = True
-    return redirect(url_for("shopping_cart"))
+    return redirect(url_for("shopping_cart")) """
 
 
 @app.route("/remove-from-cart/<int:movie_id>")

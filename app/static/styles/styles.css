@@ -431,6 +431,15 @@ select:invalid {
   background-color: rgb(247, 139, 136)
 }
 
+.success-message {
+  text-align: center;
+  margin-top: 25px;
+  margin-bottom: -15px;
+  padding: 15px;
+  padding-left: 30px;
+  background-color: rgb(97, 255, 124)
+}
+
 .hide {
   display: none;
 }

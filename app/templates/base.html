@@ -29,7 +29,7 @@
             </div>
           {% else %}
             <div class="buttons">
-              <h2>{{ session.user.fullname }}</h2>
+              <h2>{{ session.user.firstname }}</h2>
               <a id="cart" href="{{ url_for('shopping_cart')}}">
                 <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
                 {% if session.cart_size and session.cart_size %}
@@ -43,11 +43,17 @@
         </div>
       </div>
     </header>
-    {% with messages = get_flashed_messages() %}
-      {% for message in messages %}
-        <div class="card container alert">
-          <strong>Error:</strong>&nbsp;&nbsp;{{ message }}
-        </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="card container alert">
+            <strong>Error:</strong>&nbsp;&nbsp;{{ message }}
+          </div>
+        {% elif category == 'success' %}
+          <div class="card container success-message">
+            <strong>OK!:</strong>&nbsp;&nbsp;{{ message }}
+          </div>
+        {% endif %}
       {% endfor %}
     {% endwith %}
     {% block content %}{% endblock %}

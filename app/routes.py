@@ -58,11 +58,12 @@ def login():
 
 @app.route("/login", methods=["post"])
 def autenticate():
-    if not is_valid(request.form.get("username"), request.form.get("password")):
+    user = database.login(request.form.get("username"), request.form.get("password"))
+    if user is None:
         flash("Usuario o contraseña inválida", "error")
         return render_template("login.html")
     
-    session["user"] = get_user(request.form.get("username"))
+    session["user"] = user
     session.modified = True
     return redirect(url_for("index"))
 
@@ -83,15 +84,30 @@ def register():
 
 @app.route("/register", methods=["post"])
 def submit_register():
-    if email_exists(request.form.get("email")):
+    if database.email_exists(request.form.get("email")):
         flash("E-mail " + request.form.get("email") + " ya registrado", "error")
         return render_template("register.html")
 
-    if user_exists(request.form.get("username")):
-        flash("Nombre de usuario" + request.form.get("username") + " ya registrado", "error")
+    if database.user_exists(request.form.get("username")):
+        flash("Nombre de usuario " + request.form.get("username") + " ya registrado", "error")
+        return render_template("register.html")
+        
+    ret = database.create_user(
+        request.form.get("email"),
+        request.form.get("username"),
+        request.form.get("password"),
+        request.form.get("fullname"),
+        request.form.get("lastname"),
+        request.form.get("gender"),
+        request.form.get("direction"),
+        request.form.get("bank-account")
+    )
+
+    if not ret:
+        flash("Error interno en el registro de los datos", "error")
         return render_template("register.html")
 
-    add_user(request)
+    flash("Usuario registrado correctamente", "success")
     return redirect(url_for("login"))
 
 

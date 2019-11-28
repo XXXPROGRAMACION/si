@@ -17,30 +17,12 @@ def index():
 
 @app.route("/search")
 def search():
-    """ movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
-    movies = json.loads(movies_data)["movies"]
-    search_result = []
-    
-    for movie in movies:
-        if movie_filter(movie, request.args.get("q"), request.args.get("genre")):
-            search_result.append(movie_add_poster(movie))
-
-    search_result.sort(key=lambda x: x["title"]) """
-
     search_result = database.search_product(request.args.get("q"))
-    #search_result = database.latest_movies(10)
     return render_template("search-result-db.html", search_result=search_result)
 
 
 @app.route("/latest-movies")
 def latest_movies():
-    """ movies_data = open(os.path.join(app.root_path,"database/catalogue/movies.json"), encoding="utf-8").read()
-    movies = json.loads(movies_data)["movies"]
-    latest_movies = movies[:4]
-
-    for movie in latest_movies:
-        movie_add_poster(movie) """
-
     latest_movies = database.latest_movies(4)
 
     return render_template("search-result-db.html", search_result=latest_movies)
@@ -64,7 +46,7 @@ def autenticate():
         return render_template("login.html")
     
     session["user"] = user
-    session["cart"] = database.load_cart(user.customerid)
+    session["cart"] = database.load_cart(user.user_id)
     if session["cart"] is None:
         session["cart"] = []
     session["cart_size"] = 0
@@ -119,7 +101,7 @@ def submit_register():
 
 @app.route("/shopping-history")
 def shopping_history():
-    users_shopping_histories_data = open(os.path.join(app.root_path,"database/users/users_shopping_histories.json"), encoding="utf-8").read()
+    """ users_shopping_histories_data = open(os.path.join(app.root_path,"database/users/users_shopping_histories.json"), encoding="utf-8").read()
     users_shopping_histories = json.loads(users_shopping_histories_data)["users_shopping_histories"]
     shopping_history_raw = users_shopping_histories[session["user"]["username"]]
     shopping_history = { "months": [] }
@@ -138,7 +120,8 @@ def shopping_history():
             current_month["movies"].append(movie)
         last_date = date
 
-    return render_template("shopping-history.html", shopping_history=shopping_history)
+    return render_template("shopping-history.html", shopping_history=shopping_history) """
+    return redirect("/")
 
 
 @app.route("/shopping-cart")
@@ -167,7 +150,7 @@ def add_to_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product['prod_id'] == product_id:
+        if product['product_id'] == product_id:
             found = True
             product['quantity'] += 1
             break
@@ -189,7 +172,7 @@ def remove_from_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product['prod_id'] == product_id:
+        if product['product_id'] == product_id:
             found = True
             if not database.remove_from_cart(session["user"], product_id):
                 flash("Error interno al eliminar el producto del carrito", "error")
@@ -212,22 +195,12 @@ def remove_from_cart(product_id):
 def checkout():
     if session.get("user") is None or session.get("cart") is None:
         return redirect(url_for("shopping_cart"))
-    
-    total = 0
-    shopping_cart_movies = []
-    for movie_id in session["cart"]:
-        movie = load_movie(movie_id)
-        shopping_cart_movies.append(movie)
-        total += movie["price"]
 
-    process_payment(session.get("user")["username"], shopping_cart_movies, total)
+    database.process_payment(session.get("user"))
     session.pop("cart", None)
+    session["cart"] = []
+    session["cart_size"] = 0
     session.modified = True
-    
+
+    flash("Pago procesado correctamente", "success")
     return redirect(url_for("shopping_history"))
-
-
-@app.route('/list-of-movies')
-def listOfMovies():
-    movies_1949 = database.db_listOfMovies1949()
-    return render_template('list_movies.html', title = "Movies from Postgres Database", movies_1949 = movies_1949)

@@ -67,6 +67,9 @@ def autenticate():
     session["cart"] = database.load_cart(user.customerid)
     if session["cart"] is None:
         session["cart"] = []
+    session["cart_size"] = 0
+    for product in session["cart"]:
+        session["cart_size"] += product["quantity"]
     session.modified = True
     return redirect(url_for("index"))
 
@@ -144,16 +147,12 @@ def shopping_cart():
         return render_template("shopping-cart.html")
     
     total = 0
-    shopping_cart_movies = []
-    for movie_id, units in session["cart"].items():
-        movie = load_movie(movie_id)
-        movie["units"] = units
-        shopping_cart_movies.append(movie)
-        total += movie["price"]*units
+    for product in session["cart"]:
+        total += float(product['price'])*int(product['quantity'])
 
     total = round(total, 2)
     
-    return render_template("shopping-cart.html", movies=shopping_cart_movies, total=total)
+    return render_template("shopping-cart.html", products=session["cart"], total=total)
 
 
 @app.route("/add-to-cart/<int:product_id>")
@@ -168,13 +167,13 @@ def add_to_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product.prod_id == product_id:
+        if product['prod_id'] == product_id:
             found = True
-            product.quantity += 1
+            product['quantity'] += 1
             break
 
     if not found:
-        session["cart"].add(database.load_movie(product_id))
+        session["cart"].append(database.load_movie(product_id))
     
     session["cart_size"] += 1
     session.modified = True
@@ -190,15 +189,15 @@ def remove_from_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product.prod_id == product_id:
+        if product['prod_id'] == product_id:
             found = True
             if not database.remove_from_cart(session["user"], product_id):
                 flash("Error interno al eliminar el producto del carrito", "error")
                 return redirect(url_for("shopping-cart"))
-            if product.quantity == 1:
+            if product['quantity'] == 1:
                 session["cart"].remove(product)
             else:
-                product.quantity -= 1
+                product['quantity'] -= 1
             session["cart_size"] -= 1
             break
 

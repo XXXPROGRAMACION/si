@@ -6,34 +6,34 @@
       <div class="content">
         <div class="row four-one">
           <h1>Carrito de compra</h1>
-          {% if movies %}
+          {% if products %}
             <h1 class="price">Total: {{ total }}€</h2>
           {% endif %}
         </div>
       </div>
     </div>
 
-    {% if not movies %}
+    {% if not products %}
       <div class="content">
         <h2 class="empty-cart-message">
           Tu carrito está vacío :(
         </h2>
       </div>
     {% else %}
-      {% for movie in movies %}
+      {% for product in products %}
       <div class="card shopping-cart-item">
           <div class="row one-three no-gap">
-            <a class="poster-placeholder crop" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-              <img src={{ movie.poster }} alt={{ movie.poster_alt }}>
+            <a class="poster-placeholder crop" href="{{ url_for('product_detail', product_id=product.prod_id) }}">
+              <img alt={{ product.movietitle }}>
             </a>
             <div class="info">
               <div class="content">
-                <a class="top left" href="{{ url_for('movie_detail', movie_id=movie.id) }}">
-                  <h1>{{ movie.title }} ({{ movie.year }})</h1>
+                <a class="top left" href="{{ url_for('product_detail', product_id=product.prod_id) }}">
+                  <h1>{{ product.movietitle }}</h1>
                 </a>
-                <h1 class="top right price">{{ movie.price }}€</h1>
-                <h2 class="bottom left">Cantidad: {{ movie.units }}</h2>
-                <a class="bottom right remove" href="{{ url_for('remove_from_cart', movie_id=movie.id) }}">
+                <h1 class="top right price">{{ product.price }}€</h1>
+                <h2 class="bottom left">Cantidad: {{ product.quantity }}</h2>
+                <a class="bottom right remove" href="{{ url_for('remove_from_cart', product_id=product.prod_id) }}">
                   Eliminar
                 </a>
               </div>

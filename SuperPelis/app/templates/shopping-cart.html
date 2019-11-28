@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="card first">
+      <div class="content">
+        <div class="row four-one">
+          <h1>Carrito de compra</h1>
+          {% if products %}
+            <h1 class="price">Total: {{ total }}€</h2>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if not products %}
+      <div class="content">
+        <h2 class="empty-cart-message">
+          Tu carrito está vacío :(
+        </h2>
+      </div>
+    {% else %}
+      {% for product in products %}
+      <div class="card shopping-cart-item">
+          <div class="row one-three no-gap">
+            <a class="poster-placeholder crop" href="{{ url_for('product_detail', product_id=product.product_id) }}">
+              <img alt={{ product.title }}>
+            </a>
+            <div class="info">
+              <div class="content">
+                <a class="top left" href="{{ url_for('product_detail', product_id=product.product_id) }}">
+                  <h1>{{ product.title }}</h1>
+                </a>
+                <h1 class="top right price">{{ product.price }}€</h1>
+                <h2 class="bottom left">Cantidad: {{ product.quantity }}</h2>
+                <a class="bottom right remove" href="{{ url_for('remove_from_cart', product_id=product.product_id) }}">
+                  Eliminar
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      <div class="checkout-bar">
+        {% if session.user %}
+          <a href="{{ url_for('checkout') }}">Terminar compra</a>
+        {% else %}
+          <a href="{{ url_for('login') }}">Inicia sesión para finalizar la compra</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>    
+{% endblock %}

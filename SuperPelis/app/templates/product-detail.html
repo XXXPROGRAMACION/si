@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% if not product is string %}
+  <div class="container">
+    <div class="card first row no-gap detail">
+      <div class="poster-placeholder">
+        <img src={{ product.poster }} alt={{ product.poster_alt }}>
+      </div>
+      <div class="info">
+        <div class="content">
+          <div class="row four-one">
+            <h1>{{ product.title[:-6] }}</h1>
+            <h2>{{ product.price }}€</h2>
+          </div>
+        </div>
+        <div class="details">
+          <div class="type">Tipo de producto</div>
+          <div class="data">{{ product.description }}</div>
+          <div class="type">Título original</div>
+          <div class="data">{{ product.title[:-6] }}</div>
+          <div class="type">Año</div>
+          <div class="data">{{ product.year }}</div>
+          <div class="type">Géneros</div>
+          <div class="data">{{ product.genres }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="checkout-bar">
+      <a href="{{ url_for('add_to_cart', product_id=product.product_id) }}">Añadir al carrito</a>
+    </div>
+  </div>
+  {% else %}
+  {{ product }}
+  {% endif %}
+{% endblock %}

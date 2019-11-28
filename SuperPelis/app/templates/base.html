@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>SuperPelis.net</title>
+    <link rel="icon" href="{{ url_for('static', filename='media/icons/superpelis.png') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/styles.css') }}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <meta charset="UTF-8"/>
+    {% block imports %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <div class="header">
+          <a href="{{ url_for('index') }}">
+            <h1>SuperPelis.net</h1>
+          </a>
+          {% if not session.user %}
+            <div class="buttons">
+              <a id="cart" href="{{ url_for('shopping_cart')}}">
+                <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
+                {% if session.cart_size and session.cart_size %}
+                  <div><p>{{ session.cart_size }}</p></div>
+                {% endif %}
+              </a>
+              <a id="login" href="{{ url_for('login') }}">Iniciar sesión</a>
+              <a id="register" href="{{ url_for('register') }}">Registro</a>
+            </div>
+          {% else %}
+            <div class="buttons">
+              <h2>{{ session.user.firstname }}</h2>
+              <a id="cart" href="{{ url_for('shopping_cart')}}">
+                <img src="{{ url_for('static', filename='media/icons/cart.png') }}"/>
+                {% if session.cart_size and session.cart_size %}
+                  <div><p>{{ session.cart_size }}</p></div>
+                {% endif %}
+              </a>
+              <a id="history" href="{{ url_for('shopping_history') }}">Historial</a>
+              <a id="logout" href="{{ url_for('logout') }}">Cerrar sesión</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        {% if category == 'error' %}
+          <div class="card container alert">
+            <strong>Error:</strong>&nbsp;&nbsp;{{ message }}
+          </div>
+        {% elif category == 'success' %}
+          <div class="card container success-message">
+            <strong>OK!:</strong>&nbsp;&nbsp;{{ message }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>
+      <div class="container">
+        <div class="footer">
+          <p>
+            SuperPelis.net no se hace responsable de los posibles daños causados
+            por este servicio como: nauseas, pérdida de contacto con la realidad
+            y otros trastornos psicológicos.
+          </p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block imports %}
+  <script src="{{ url_for('static', filename='scripts/RegisterValidation.js') }}"></script>
+  <script>
+    $(document).ready(() => {
+      $('#password').on('input', function() {
+        let password = $("#password");
+        let hasNumber = /\d/;
+        let hasLetter = /\D/;
+        if (password.val().length === 0) {
+          password.css("background-color", "#ececec");
+        } else if (password.val().length < 7) {
+          password.css("background-color", "#d46868");
+        } else if (!hasNumber.test(password.val()) || !hasLetter.test(password.val())) {
+          password.css("background-color", "#edd98a");
+        } else {
+          password.css("background-color", "#7ff59f");
+        }
+      });
+    });
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="card first">
+      <div class="content">
+        <h1>Registrar una cuenta</h1>
+      </div>
+    </div>
+    <div class="card">
+      <div class="content">
+        <form class="form vertical" action="" method="post">
+          <div class="row big-gap">
+            <div>
+              <h2>Datos de la cuenta</h1>
+              <input class="first" type="email" name="email" placeholder="Correo electrónico" required/>
+              <input type="text" name="username" placeholder="Nombre de usuario" minlength="3" maxlength="20" required/>
+              <div class="row">
+                <input id="password" type="password" name="password" placeholder="Contraseña" minlength="6" maxlength="20" required/>
+                <input type="password" name="passwordCheck" placeholder="Repetir contraseña" maxlength="20" required/>
+              </div>
+            </div>
+            <div>
+              <h2>Datos del cliente</h1>
+              <div class="row two-three">
+                <input class="first" type="text" name="fullname" placeholder="Nombre" minlength="3" maxlength="15" required/>
+                <input type="text" name="lastname" placeholder="Apellidos" minlength="3" maxlength="40" required/>
+              </div>
+              <div class="row one-three">
+                <select name="gender" required>
+                  <option value="" selected disabled hidden>Género</option>
+                  <option value="M">Hombre</option>
+                  <option value="F">Mujer</option>
+                </select> 
+                <input type="text" name="direction" placeholder="Dirección" minlength="6" maxlength="40" required/>
+              </div>
+              <input type="text" name="bank-account" placeholder="Número de cuenta" minlength="10" maxlength="40" required/>
+            </div>
+          </div>
+          <input class="submit" type="submit" value="Crear cuenta" onclick="validateFields()" required/>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 CREATE OR REPLACE FUNCTION updInventoryFunction()
 RETURNS trigger AS $$ BEGIN
     IF NEW.status<>'Paid' OR OLD.status IS NOT NULL THEN
-	RETURN NULL;
+	    RETURN NULL;
     END IF;
 
     IF EXISTS (

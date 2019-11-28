@@ -109,3 +109,7 @@ CREATE TABLE alerts (
 );
 
 -- Fuerza contador correcto en orders
+BEGIN;
+LOCK TABLE orders IN EXCLUSIVE MODE;
+SELECT setval('orders_orderid_seq', COALESCE((SELECT MAX(order_id)+1 FROM orders), 1), false);
+COMMIT;

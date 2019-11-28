@@ -354,3 +354,26 @@ def remove_from_cart(user, product_id):
         print("-"*60)
 
         return 'Something is broken'
+
+
+def process_payment(user):
+    if user is None:
+        return False
+
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+
+        db_conn.execute('UPDATE orders SET status=\'Paid\' WHERE user_id=\''+str(user.user_id)+'\' AND status IS NULL')
+        
+        db_conn.close() 
+        return True
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'

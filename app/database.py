@@ -377,3 +377,31 @@ def process_payment(user):
         print("-"*60)
 
         return 'Something is broken'
+
+
+def load_user_history(user):
+    if user is None:
+        return None
+
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+
+        result = db_conn.execute('SELECT * FROM (SELECT * FROM orders AS ord WHERE ord.user_id=\''+str(user.user_id)+'\' AND ord.status IS NOT NULL) AS o JOIN orders_details AS od ON o.order_id=od.order_id JOIN products AS p ON od.product_id=p.product_id JOIN movies AS m ON p.movie_id=m.movie_id ORDER BY o.date DESC')
+        
+        db_conn.close()
+
+        ret = []
+        for movie in result:
+            ret.append(dict(movie.items()))
+
+        return ret
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'

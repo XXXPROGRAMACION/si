@@ -30,7 +30,14 @@ def latest_movies():
 
 @app.route("/product-detail/<int:product_id>")
 def product_detail(product_id):
-    return render_template("product-detail.html", product=database.load_product(product_id))
+    genres = database.get_genres(product_id)
+    string = ""
+    for genre in genres:
+        string = string+genre.name+", "
+
+    product=database.load_product(product_id)
+    product["genres"] = string[:-2]
+    return render_template("product-detail.html", product=product)
 
 
 @app.route("/login", methods=["get"])

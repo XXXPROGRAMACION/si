@@ -134,7 +134,8 @@ def load_product(product_id):
         
         db_conn.close()
         
-        return list(db_result)[0]
+        ret = dict(list(db_result)[0].items())
+        return ret
     except:
         if db_conn is not None:
             db_conn.close()
@@ -395,8 +396,8 @@ def load_movie(product_id):
         return 'Something is broken'
 
 
-def get_genres(movie_id):
-    if movie_id is None:
+def get_genres(product_id):
+    if product_id is None:
         return None
 
     try:
@@ -404,20 +405,23 @@ def get_genres(movie_id):
         db_conn = db_engine.connect()
         
         genres = list(db_conn.execute(
-            'SELECT *\
-            FROM movie_genres AS p \
-            JOIN movies AS m \
-            ON p.movie_id=m.movie_id \
-            WHERE p.product_id=\''+str(product_id)+'\''
+            'SELECT name \
+            FROM movie_genres AS mg \
+            JOIN ( \
+                SELECT m.movie_id \
+                FROM movies AS m \
+                JOIN products AS p \
+                ON p.movie_id=m.movie_id \
+                WHERE p.product_id=\''+str(product_id)+'\')\
+            AS mov \
+            ON mov.movie_id=mg.movieid \
+            JOIN genres AS g\
+            ON g.genre_id=mg.genre_id'
         ))
 
         db_conn.close()
-        if len(movie) == 0:
-            return None
-
-        ret = dict(movie[0].items())
-        ret["quantity"] = int(ret["quantity"])
-        return ret
+        
+        return genres
     except:
         if db_conn is not None:
             db_conn.close()

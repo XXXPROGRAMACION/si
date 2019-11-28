@@ -64,6 +64,9 @@ def autenticate():
         return render_template("login.html")
     
     session["user"] = user
+    session["cart"] = database.load_cart(user.customerid)
+    if session["cart"] is None:
+        session["cart"] = []
     session.modified = True
     return redirect(url_for("index"))
 
@@ -155,30 +158,52 @@ def shopping_cart():
 
 @app.route("/add-to-cart/<int:product_id>")
 def add_to_cart(product_id):
-    """ if session.get("cart") is None:
-        session["cart"] = {}
+    if not database.add_to_cart(session["user"], product_id):
+        flash("Error al añadir el producto al carrito", "error")
+        return redirect(url_for("shopping_cart"))
+        
+    if session.get("cart") is None:
+        session["cart"] = []
         session["cart_size"] = 0
-    
-    if session["cart"].get(movie_id) is None:
-        session["cart"][movie_id] = 1
-    else:
-        session["cart"][movie_id] += 1
 
+    found = False
+    for product in session["cart"]:
+        if product.prod_id == product_id:
+            found = True
+            product.quantity += 1
+            break
+
+    if not found:
+        session["cart"].add(database.load_movie(product_id))
+    
     session["cart_size"] += 1
     session.modified = True
-    return redirect(url_for("shopping_cart")) """
+    return redirect(url_for("shopping_cart"))
 
 
-@app.route("/remove-from-cart/<int:movie_id>")
-def remove_from_cart(movie_id):
-    if session.get("cart") is None or session["cart"].get(movie_id) is None:
+@app.route("/remove-from-cart/<int:product_id>")
+def remove_from_cart(product_id):
+    if session.get("cart") is None:
+        session["cart"] = []
+        session["cart_size"] = 0
         return redirect(url_for("shopping_cart"))
 
-    session["cart"][movie_id] -= 1
-    session["cart_size"] -= 1
+    found = False
+    for product in session["cart"]:
+        if product.prod_id == product_id:
+            found = True
+            if not database.remove_from_cart(session["user"], product_id):
+                flash("Error interno al eliminar el producto del carrito", "error")
+                return redirect(url_for("shopping-cart"))
+            if product.quantity == 1:
+                session["cart"].remove(product)
+            else:
+                product.quantity -= 1
+            session["cart_size"] -= 1
+            break
 
-    if session["cart"][movie_id] == 0:
-        session["cart"].pop(movie_id, None)
+    if not found:
+        flash("Error al eliminar el producto del carrito", "error")
 
     session.modified = True
     return redirect(url_for("shopping_cart"))

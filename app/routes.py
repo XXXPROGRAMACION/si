@@ -12,12 +12,12 @@ import sys
 
 @app.route("/")
 def index():            
-    return render_template("index.html")
+    return render_template("index.html", genres=database.get_all_genres())
 
 
 @app.route("/search")
 def search():
-    search_result = database.search_product(request.args.get("q"))
+    search_result = database.search_product(request.args.get("q"), request.args.get("genre"))
     return render_template("search-result-db.html", search_result=search_result)
 
 

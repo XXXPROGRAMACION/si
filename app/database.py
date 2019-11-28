@@ -43,30 +43,65 @@ def latest_movies(amount):
         return 'Something is broken'
 
 
-def search_product(title, amount=50):
+def search_product(title, genre, amount=50):
     try:
         db_conn = None
         db_conn = db_engine.connect()
 
         if title is None:
-            db_result = db_conn.execute(
-                "SELECT * \
-                FROM \
-                    movies AS m \
-                    JOIN products AS p \
-                    ON m.movie_id=p.movie_id \
-                LIMIT " + str(amount)
-            )
+            if genre is None:
+                db_result = db_conn.execute(
+                    "SELECT * \
+                    FROM \
+                        movies AS m \
+                        JOIN products AS p \
+                        ON m.movie_id=p.movie_id \
+                    LIMIT " + str(amount)
+                )
+            else:
+                db_result = db_conn.execute(
+                    "SELECT * \
+                    FROM \
+                        movies AS m \
+                        JOIN products AS p \
+                        ON m.movie_id=p.movie_id \
+                        JOIN movie_genres AS mg \
+                        ON mg.movieid=m.movie_id \
+                        JOIN ( \
+                            SELECT * \
+                            FROM genres AS g \
+                            WHERE g.name LIKE \'%%" + str(genre) + "%%\') AS gr \
+                        ON gr.genre_id=mg.genre_id \
+                    LIMIT " + str(amount)
+                )
         else:
-            db_result = db_conn.execute(
-                "SELECT * \
-                FROM \
-                    movies AS m \
-                    JOIN products AS p \
-                    ON m.movie_id=p.movie_id \
-                WHERE m.title LIKE \'%%" + title + "%%\'\
-                LIMIT " + str(amount)
-            )
+            if genre is not None:
+                db_result = db_conn.execute(
+                    "SELECT * \
+                    FROM \
+                        movies AS m \
+                        JOIN products AS p \
+                        ON m.movie_id=p.movie_id \
+                        JOIN movie_genres AS mg \
+                        ON mg.movieid=m.movie_id \
+                        JOIN ( \
+                            SELECT * \
+                            FROM genres AS g \
+                            WHERE g.name LIKE \'%%" + str(genre) + "%%\') AS gr \
+                        ON gr.genre_id=mg.genre_id \
+                    WHERE m.title LIKE \'%%" + title + "%%\'\
+                    LIMIT " + str(amount)
+                )
+            else:  
+                db_result = db_conn.execute(
+                    "SELECT * \
+                    FROM \
+                        movies AS m \
+                        JOIN products AS p \
+                        ON m.movie_id=p.movie_id \
+                    WHERE m.title LIKE \'%%" + title + "%%\'\
+                    LIMIT " + str(amount)
+                )
         
         db_conn.close()
         
@@ -358,6 +393,64 @@ def load_movie(product_id):
         print("-"*60)
 
         return 'Something is broken'
+
+
+def get_genres(movie_id):
+    if movie_id is None:
+        return None
+
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+        
+        genres = list(db_conn.execute(
+            'SELECT *\
+            FROM movie_genres AS p \
+            JOIN movies AS m \
+            ON p.movie_id=m.movie_id \
+            WHERE p.product_id=\''+str(product_id)+'\''
+        ))
+
+        db_conn.close()
+        if len(movie) == 0:
+            return None
+
+        ret = dict(movie[0].items())
+        ret["quantity"] = int(ret["quantity"])
+        return ret
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'
+
+
+def get_all_genres():
+    try:
+        db_conn = None
+        db_conn = db_engine.connect()
+
+        genres = list(db_conn.execute(
+            'SELECT name \
+            FROM genres'
+        ))
+
+        db_conn.close()
+        return genres
+    except:
+        if db_conn is not None:
+            db_conn.close()
+        print("Exception in DB access:")
+        print("-"*60)
+        traceback.print_exc(file=sys.stderr)
+        print("-"*60)
+
+        return 'Something is broken'
+
 
 
 def add_to_cart(user, product_id):

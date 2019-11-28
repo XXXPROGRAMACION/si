@@ -1,17 +1,11 @@
-CREATE OR REPLACE VIEW months_totalamount AS
-SELECT EXTRACT(year FROM orderdate) AS year, EXTRACT(month FROM orderdate) AS month, SUM(totalamount) AS totalamount
-FROM orders GROUP BY year, month ORDER BY year, month;
+CREATE OR REPLACE VIEW movie_sales AS SELECT movieid, COUNT(movieid) AS sales FROM orderdetail AS od JOIN products AS p ON od.prod_id=p.prod_id GROUP BY movieid;
+CREATE OR REPLACE FUNCTION getTopVentas(min_year int)
 
-CREATE OR REPLACE VIEW months_products AS
-SELECT EXTRACT(year FROM orderdate) AS year, EXTRACT(month FROM orderdate) AS month, COUNT(*) AS products
-FROM orders AS o JOIN orderdetail AS od ON o.orderid=od.orderid GROUP BY year, month ORDER BY year, month;
-
-CREATE OR REPLACE FUNCTION getTopVentas(min_totalamount int, min_products int)
-RETURNS TABLE (year double precision, month double precision, totalamount numeric, products bigint) AS $$ BEGIN
+RETURNS TABLE (year text, movietitle character varying (255), sales bigint) AS $$ BEGIN
 	RETURN QUERY
-		SELECT mta.year, mta.month, mta.totalamount, mp.products
-		FROM months_totalamount AS mta JOIN months_products AS mp ON mta.year=mp.year AND mta.month=mp.month
-		WHERE mta.totalamount>=min_totalamount OR mp.products>=min_products ORDER BY mta.year, mta.month;
+		SELECT ys.year, m.movietitle, ms.sales FROM movie_sales AS ms JOIN imdb_movies AS m ON ms.movieid=m.movieid JOIN
+		(SELECT m.year, MAX(ms.sales) AS sales FROM movie_sales AS ms JOIN imdb_movies AS m ON ms.movieid=m.movieid WHERE m.year>=CAST(min_year AS text) GROUP BY m.year) AS ys
+		ON ms.sales=ys.sales AND m.year=ys.year ORDER BY year ASC;
 END $$ LANGUAGE plpgsql;
 
---SELECT * FROM getTopVentas(300000, 17000);
+SELECT * FROM getTopVentas(2000);

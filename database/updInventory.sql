@@ -7,18 +7,18 @@ RETURNS trigger AS $$ BEGIN
     IF EXISTS (
         SELECT * FROM inventory AS i JOIN (
             SELECT od.product_id, od.quantity 
-                FROM orderdetail AS od WHERE od.order_id=OLD.order_id
+                FROM orders_details AS od WHERE od.order_id=OLD.order_id
         ) AS od ON i.product_id=od.product_id WHERE i.stock<od.quantity
     ) THEN
         RETURN NULL;
     END IF;
 
     INSERT INTO alerts SELECT i.product_id FROM inventory AS i JOIN (
-        SELECT od.product_id, od.quantity FROM orderdetail AS od WHERE od.order_id=OLD.order_id
+        SELECT od.product_id, od.quantity FROM orders_details AS od WHERE od.order_id=OLD.order_id
     ) AS od ON i.product_id=od.product_id WHERE i.stock<od.quantity;
 
     UPDATE inventory AS i SET stock=i.stock-od.quantity
-        FROM (SELECT od.product_id, od.quantity FROM orderdetail AS od WHERE od.order_id=OLD.order_id) AS od
+        FROM (SELECT od.product_id, od.quantity FROM orders_details AS od WHERE od.order_id=OLD.order_id) AS od
         WHERE i.product_id=od.product_id;
 
     RETURN NEW;

@@ -45,6 +45,9 @@ def autenticate():
         flash("Usuario o contraseña inválida", "error")
         return render_template("login.html")
     
+    if not database.save_products_into_cart(user, session.get("cart")):
+        flash("Error al guardar los productos del carrito", "error")
+
     session["user"] = user
     session["cart"] = database.load_cart(user.user_id)
     if session["cart"] is None:
@@ -141,13 +144,13 @@ def shopping_cart():
 
 @app.route("/add-to-cart/<int:product_id>")
 def add_to_cart(product_id):
-    if not database.add_to_cart(session["user"], product_id):
-        flash("Error al añadir el producto al carrito", "error")
-        return redirect(url_for("shopping_cart"))
-        
     if session.get("cart") is None:
         session["cart"] = []
         session["cart_size"] = 0
+
+    if session.get("user") is not None and not database.add_to_cart(session["user"], product_id):
+        flash("Error al añadir el producto al carrito", "error")
+        return redirect(url_for("shopping_cart"))
 
     found = False
     for product in session["cart"]:

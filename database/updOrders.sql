@@ -7,20 +7,20 @@ DECLARE
     old_price numeric := 0;
     old_quantity integer := 0;
 BEGIN
-    IF NEW.order_id IS NOT NULL THEN
+    IF TG_OP='UPDATE' OR TG_OP='INSERT' THEN
         current_order_id := NEW.order_id;
-    ELSIF OLD.order_id IS NOT NULL THEN
+    ELSIF TG_OP='DELETE' THEN
         current_order_id := OLD.order_id;
     ELSE
         RETURN NULL;
     END IF;
 
-    IF NEW.price IS NOT NULL AND NEW.quantity IS NOT NULL THEN
+    IF TG_OP='UPDATE' OR TG_OP='INSERT' THEN
         new_price := NEW.price;
         new_quantity := NEW.quantity;
     END IF;
 
-    IF OLD.price IS NOT NULL AND OLD.quantity IS NOT NULL THEN
+    IF TG_OP='DELETE' OR TG_OP='UPDATE' THEN
         old_price := OLD.price;
         old_quantity := OLD.quantity;
     END IF;

@@ -405,3 +405,15 @@ def load_user_history(user):
         print("-"*60)
 
         return 'Something is broken'
+
+
+def save_products_into_cart(user, products):
+    if user is None or products is None:
+        return False
+
+    for product in products:
+        if not add_to_cart(user, product["product_id"]):
+            return False
+
+    return True
+        

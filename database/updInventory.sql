@@ -27,5 +27,11 @@ END $$ LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS updInventory ON orders;
 CREATE TRIGGER updInventory BEFORE UPDATE ON orders FOR EACH ROW EXECUTE PROCEDURE updInventoryFunction();
 
---SELECT * FROM orders WHERE status<>'Paid';
---UPDATE orders SET status='Paid' WHERE orderid=88699;
+-- SELECT * FROM orders_details WHERE order_id=88699;
+-- product_id: 3745
+-- quantity: 4
+-- SELECT * FROM inventory WHERE product_id=3745;
+-- stock: 983
+-- UPDATE orders SET status='Paid' WHERE order_id=88699;
+-- SELECT * FROM inventory WHERE product_id=3745;
+-- stock: 979 (-4)

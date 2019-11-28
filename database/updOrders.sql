@@ -25,15 +25,36 @@ BEGIN
         old_quantity := OLD.quantity;
     END IF;
 
-    UPDATE orders AS o SET net_amount=ROUND(CAST(o.net_amount+(new_price*new_quantity)-(old_price*old_quantity) AS numeric), 2) WHERE o.order_id=order_id;
+    UPDATE orders AS o
+    SET net_amount=ROUND(
+        CAST(
+            o.net_amount+(new_price*new_quantity)-(old_price*old_quantity)
+            AS numeric
+        ),
+        2
+    )
+    WHERE o.order_id=order_id;
     -- Dos distintas porque o.net_amount en la anterior no está actualizada
-    UPDATE orders AS o SET total_amount=ROUND(CAST(o.net_amount*(100+o.tax)/100 AS numeric), 2) WHERE o.order_id=current_order_id;
+    UPDATE orders AS o
+    SET total_amount=ROUND(
+        CAST(
+            o.net_amount*(100+o.tax)/100
+            AS numeric
+        ),
+        2
+    )
+    WHERE o.order_id=current_order_id;
 
     RETURN NEW;
 END $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS updInventory ON orders_details;
-CREATE TRIGGER updInventory BEFORE INSERT OR UPDATE OR DELETE ON orders_details FOR EACH ROW EXECUTE PROCEDURE updOrdersFunction();
+DROP TRIGGER IF EXISTS updInventory
+ON orders_details;
+CREATE TRIGGER updInventory
+BEFORE INSERT OR UPDATE OR DELETE
+ON orders_details
+FOR EACH ROW
+EXECUTE PROCEDURE updOrdersFunction();
 
 -- SELECT * FROM orders WHERE order_id=161010;
 -- net_amount: 103.30

@@ -107,3 +107,5 @@ CREATE TABLE alerts (
     product_id integer NOT NULL,
     FOREIGN KEY (product_id) REFERENCES products(product_id) ON DELETE CASCADE
 );
+
+-- Fuerza contador correcto en orders

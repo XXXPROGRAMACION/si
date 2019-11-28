@@ -258,3 +258,19 @@ SELECT setval(
     false
 );
 COMMIT;
+
+-- Fuerza contador correcto en users
+BEGIN;
+LOCK TABLE users IN EXCLUSIVE MODE;
+SELECT setval(
+    'customers_customerid_seq',
+    COALESCE(
+        (
+            SELECT MAX(user_id)+1
+            FROM users
+        ),
+        1
+    ),
+    false
+);
+COMMIT;

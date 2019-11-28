@@ -23,17 +23,17 @@
       {% for product in products %}
       <div class="card shopping-cart-item">
           <div class="row one-three no-gap">
-            <a class="poster-placeholder crop" href="{{ url_for('product_detail', product_id=product.prod_id) }}">
-              <img alt={{ product.movietitle }}>
+            <a class="poster-placeholder crop" href="{{ url_for('product_detail', product_id=product.product_id) }}">
+              <img alt={{ product.title }}>
             </a>
             <div class="info">
               <div class="content">
-                <a class="top left" href="{{ url_for('product_detail', product_id=product.prod_id) }}">
-                  <h1>{{ product.movietitle }}</h1>
+                <a class="top left" href="{{ url_for('product_detail', product_id=product.product_id) }}">
+                  <h1>{{ product.title }}</h1>
                 </a>
                 <h1 class="top right price">{{ product.price }}€</h1>
                 <h2 class="bottom left">Cantidad: {{ product.quantity }}</h2>
-                <a class="bottom right remove" href="{{ url_for('remove_from_cart', product_id=product.prod_id) }}">
+                <a class="bottom right remove" href="{{ url_for('remove_from_cart', product_id=product.product_id) }}">
                   Eliminar
                 </a>
               </div>

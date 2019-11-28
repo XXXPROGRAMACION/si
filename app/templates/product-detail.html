@@ -10,7 +10,7 @@
       <div class="info">
         <div class="content">
           <div class="row four-one">
-            <h1>{{ product.movietitle[:-6] }}</h1>
+            <h1>{{ product.title[:-6] }}</h1>
             <h2>{{ product.price }}€</h2>
           </div>
         </div>
@@ -18,7 +18,7 @@
           <div class="type">Tipo de producto</div>
           <div class="data">{{ product.description }}</div>
           <div class="type">Título original</div>
-          <div class="data">{{ product.movietitle[:-6] }}</div>
+          <div class="data">{{ product.title[:-6] }}</div>
           <div class="type">Año</div>
           <div class="data">{{ product.year }}</div>
           <div class="type">Dirección</div>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="checkout-bar">
-      <a href="{{ url_for('add_to_cart', product_id=product.prod_id) }}">Añadir al carrito</a>
+      <a href="{{ url_for('add_to_cart', product_id=product.product_id) }}">Añadir al carrito</a>
     </div>
   </div>
   {% else %}

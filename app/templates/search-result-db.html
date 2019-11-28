@@ -1,11 +1,11 @@
 <div class="movie-grid">
   {% for product in search_result %}
     {% if not product is string %}
-    <a class="card movie" href="{{ url_for('product_detail', product_id=product.prod_id) }}">
+    <a class="card movie" href="{{ url_for('product_detail', product_id=product.product_id) }}">
       <div class="poster-placeholder">
       </div>
       <div class="content">
-        <h1>{{ product.movietitle[:-6] }}</h1>
+        <h1>{{ product.title[:-6] }}</h1>
       </div>
     </a>
     {% else %}

@@ -64,7 +64,7 @@ def autenticate():
         return render_template("login.html")
     
     session["user"] = user
-    session["cart"] = database.load_cart(user.customerid)
+    session["cart"] = database.load_cart(user.user_id)
     if session["cart"] is None:
         session["cart"] = []
     session["cart_size"] = 0
@@ -167,7 +167,7 @@ def add_to_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product['prod_id'] == product_id:
+        if product['product_id'] == product_id:
             found = True
             product['quantity'] += 1
             break
@@ -189,7 +189,7 @@ def remove_from_cart(product_id):
 
     found = False
     for product in session["cart"]:
-        if product['prod_id'] == product_id:
+        if product['product_id'] == product_id:
             found = True
             if not database.remove_from_cart(session["user"], product_id):
                 flash("Error interno al eliminar el producto del carrito", "error")
@@ -225,9 +225,3 @@ def checkout():
     session.modified = True
     
     return redirect(url_for("shopping_history"))
-
-
-@app.route('/list-of-movies')
-def listOfMovies():
-    movies_1949 = database.db_listOfMovies1949()
-    return render_template('list_movies.html', title = "Movies from Postgres Database", movies_1949 = movies_1949)

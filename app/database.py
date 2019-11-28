@@ -19,7 +19,15 @@ def latest_movies(amount):
         db_conn = None
         db_conn = db_engine.connect()
         
-        db_result = db_conn.execute("SELECT * FROM movies AS m JOIN products AS p ON m.movie_id=p.movie_id ORDER BY year DESC LIMIT " + str(amount))
+        db_result = db_conn.execute(
+            "SELECT * \
+            FROM \
+                movies AS m \
+                JOIN products AS p \
+                ON m.movie_id=p.movie_id \
+            ORDER BY year DESC \
+            LIMIT " + str(amount)
+        )
         
         db_conn.close()
         
@@ -41,9 +49,24 @@ def search_product(title, amount=50):
         db_conn = db_engine.connect()
 
         if title is None:
-            db_result = db_conn.execute("SELECT * FROM movies AS m JOIN products AS p ON m.movie_id=p.movie_id LIMIT " + str(amount))
+            db_result = db_conn.execute(
+                "SELECT * \
+                FROM \
+                    movies AS m \
+                    JOIN products AS p \
+                    ON m.movie_id=p.movie_id \
+                LIMIT " + str(amount)
+            )
         else:
-            db_result = db_conn.execute("SELECT * FROM movies AS m JOIN products AS p ON m.movie_id=p.movie_id WHERE m.title LIKE \'%%" + title + "%%\' LIMIT " + str(amount))
+            db_result = db_conn.execute(
+                "SELECT * \
+                FROM \
+                    movies AS m \
+                    JOIN products AS p \
+                    ON m.movie_id=p.movie_id \
+                WHERE m.title LIKE \'%%" + title + "%%\'\
+                LIMIT " + str(amount)
+            )
         
         db_conn.close()
         
@@ -64,7 +87,15 @@ def load_product(product_id):
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT * FROM movies AS m JOIN products AS p ON m.movie_id=p.movie_id WHERE p.product_id=" + str(product_id) + " LIMIT 1")
+        db_result = db_conn.execute(
+            "SELECT * \
+            FROM \
+                movies AS m \
+                JOIN products AS p \
+                ON m.movie_id=p.movie_id \
+            WHERE p.product_id=" + str(product_id) + "\
+            LIMIT 1"
+        )
         
         db_conn.close()
         
@@ -85,7 +116,12 @@ def user_exists(username):
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT * FROM users AS u WHERE u.username LIKE \'%%" + username + "%%\' LIMIT 1")
+        db_result = db_conn.execute(
+            "SELECT * \
+            FROM users AS u \
+            WHERE u.username LIKE \'%%" + username + "%%\' \
+            LIMIT 1"
+        )
         
         db_conn.close()
         
@@ -112,7 +148,12 @@ def email_exists(email):
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT * FROM users AS u WHERE u.email LIKE \'%%" + email + "%%\' LIMIT 1")
+        db_result = db_conn.execute(
+            "SELECT * \
+            FROM users AS u \
+            WHERE u.email LIKE \'%%" + email + "%%\'\
+            LIMIT 1"
+        )
         
         db_conn.close()
 
@@ -145,7 +186,11 @@ def login(username, password):
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_result = db_conn.execute("SELECT * FROM users AS u WHERE u.username LIKE \'%%" + username + "%%\'")
+        db_result = db_conn.execute(
+            "SELECT * \
+            FROM users AS u \
+            WHERE u.username LIKE \'%%" + username + "%%\'"
+        )
         
         db_conn.close()
         
@@ -182,8 +227,25 @@ def create_user(email, username, password, firstname, lastname, gender, address,
         db_conn = db_engine.connect()
 
         db_conn.execute(
-            "INSERT INTO users (email, username, password, firstname, lastname, gender, address, bank_account) " +
-            "VALUES (\'"+str(email)+"\', \'"+str(username)+"\', \'"+str(password)+"\', \'"+str(firstname)+"\', \'"+str(lastname)+"\', \'"+str(gender)+"\', \'"+str(address)+"\', \'"+str(bank_account)+"\')")
+            "INSERT INTO users (\
+                email,\
+                username, \
+                password, \
+                firstname, \
+                lastname, \
+                gender, \
+                address, \
+                bank_account) " +
+            "VALUES (\'"
+                +str(email)+"\', \'"
+                +str(username)+"\', \'"
+                +str(password)+"\', \'"
+                +str(firstname)+"\', \'"
+                +str(lastname)+"\', \'"
+                +str(gender)+"\', \'"
+                +str(address)+"\', \'"
+                +str(bank_account)+"\')"
+        )
         
         db_conn.close()
         return True
@@ -206,7 +268,14 @@ def load_cart(customer_id):
         db_conn = None
         db_conn = db_engine.connect()
 
-        order = list(db_conn.execute('SELECT * FROM orders AS o WHERE o.user_id=\''+str(customer_id)+'\' AND status IS NULL'))
+        order = list(db_conn.execute(
+            'SELECT * \
+            FROM orders AS o \
+            WHERE \
+                o.user_id=\''+str(customer_id)+'\' \
+                AND \
+                status IS NULL'
+        ))
 
         if len(order) == 0:
             db_conn.close()
@@ -215,11 +284,26 @@ def load_cart(customer_id):
         order = order[0]
 
         cart = list(db_conn.execute(
-            'SELECT * FROM' +
-            ' (SELECT od.product_id, od.quantity, p.movie_id, p.price, p.description FROM' +
-            '  (SELECT o.product_id, o.price, o.quantity FROM orders_details AS o WHERE o.order_id=\''+str(order.order_id)+'\') AS od ' +
-            '   JOIN products AS p ON od.product_id=p.product_id) AS prods' + 
-            ' JOIN movies AS m ON prods.movie_id = m.movie_id'
+            'SELECT * \
+            FROM \
+                (SELECT \
+                    od.product_id, \
+                    od.quantity, \
+                    p.movie_id, \
+                    p.price, \
+                    p.description \
+                FROM \
+                    (SELECT \
+                        o.product_id, \
+                        o.price, \
+                        o.quantity \
+                    FROM orders_details AS o \
+                    WHERE o.order_id=\''+str(order.order_id)+'\'\
+                ) AS od \
+                JOIN products AS p \
+                ON od.product_id=p.product_id) AS prods \
+            JOIN movies AS m \
+            ON prods.movie_id = m.movie_id'
         ))
 
         db_conn.close()
@@ -250,7 +334,13 @@ def load_movie(product_id):
         db_conn = None
         db_conn = db_engine.connect()
         
-        movie = list(db_conn.execute('SELECT *, \'1\' AS quantity FROM products AS p JOIN movies AS m ON p.movie_id=m.movie_id WHERE p.product_id=\''+str(product_id)+'\''))
+        movie = list(db_conn.execute(
+            'SELECT *, \'1\' AS quantity\
+            FROM products AS p \
+            JOIN movies AS m \
+            ON p.movie_id=m.movie_id \
+            WHERE p.product_id=\''+str(product_id)+'\''
+        ))
 
         db_conn.close()
         if len(movie) == 0:
@@ -278,19 +368,40 @@ def add_to_cart(user, product_id):
         db_conn = None
         db_conn = db_engine.connect()
 
-        order = list(db_conn.execute('SELECT * FROM orders AS o WHERE o.user_id=\''+str(user.user_id)+'\' AND o.status IS NULL'))
+        order = list(db_conn.execute(
+            'SELECT * \
+            FROM orders AS o \
+            WHERE \
+                o.user_id=\''+str(user.user_id)+'\' \
+                AND \
+                o.status IS NULL'
+        ))
 
         if len(order) == 0:
             today = datetime.date.today()
             db_conn.execute(
-                'INSERT INTO orders (user_id, date, tax) ' +
-                'VALUES (\''+str(user.user_id)+'\', \''+str(today)+'\', \'15\')'
+                'INSERT INTO orders (user_id, date, tax) \
+                VALUES (\''+str(user.user_id)+'\', \''+str(today)+'\', \'15\')'
             )
-            order = list(db_conn.execute('SELECT * FROM orders AS o WHERE o.user_id=\''+str(user.user_id)+'\' AND o.status IS NULL'))
+            order = list(db_conn.execute(
+                'SELECT * \
+                FROM orders AS o \
+                WHERE \
+                    o.user_id=\''+str(user.user_id)+'\' \
+                    AND \
+                    o.status IS NULL'
+            ))
 
         order = order[0]
 
-        order_detail = list(db_conn.execute('SELECT * FROM orders_details AS o WHERE o.order_id=\''+str(order.order_id)+'\' AND o.product_id=\''+str(product_id)+'\''))
+        order_detail = list(db_conn.execute(
+            'SELECT * \
+            FROM orders_details AS o \
+            WHERE \
+                o.order_id=\''+str(order.order_id)+'\' \
+                AND \
+                o.product_id=\''+str(product_id)+'\''
+        ))
 
         if len(order_detail) == 0:
             db_conn.execute(
@@ -299,7 +410,14 @@ def add_to_cart(user, product_id):
             )
         else:
             order_detail = order_detail[0]
-            db_conn.execute('UPDATE orders_details AS o SET quantity=\''+str((order_detail.quantity+1))+'\' WHERE o.order_id=\''+str(order_detail.order_id)+'\' AND o.product_id=\''+str(order_detail.product_id)+'\'')
+            db_conn.execute(
+                'UPDATE orders_details AS o \
+                SET quantity=\''+str((order_detail.quantity+1))+'\' \
+                WHERE \
+                    o.order_id=\''+str(order_detail.order_id)+'\' \
+                    AND \
+                    o.product_id=\''+str(order_detail.product_id)+'\''
+            )
 
         db_conn.close()
         return True
@@ -322,7 +440,14 @@ def remove_from_cart(user, product_id):
         db_conn = None
         db_conn = db_engine.connect()
 
-        order = list(db_conn.execute('SELECT * FROM orders AS o WHERE o.user_id=\''+str(user.user_id)+'\' AND status IS NULL'))
+        order = list(db_conn.execute(
+            'SELECT * \
+            FROM orders AS o \
+            WHERE \
+                o.user_id=\''+str(user.user_id)+'\' \
+                AND \
+                status IS NULL'
+        ))
 
         if len(order) == 0:
             db_conn.close()
@@ -330,7 +455,14 @@ def remove_from_cart(user, product_id):
 
         order = order[0]
 
-        order_detail = list(db_conn.execute('SELECT * FROM orders_details AS od WHERE od.order_id=\''+str(order.order_id)+'\' AND od.product_id=\''+str(product_id)+'\''))
+        order_detail = list(db_conn.execute(
+            'SELECT * \
+            FROM orders_details AS od \
+            WHERE \
+                od.order_id=\''+str(order.order_id)+'\' \
+                AND \
+                od.product_id=\''+str(product_id)+'\''
+        ))
 
         if len(order_detail) == 0:
             db_conn.close()
@@ -339,9 +471,22 @@ def remove_from_cart(user, product_id):
         order_detail = order_detail[0]
 
         if order_detail.quantity == 1:
-            db_conn.execute('DELETE FROM orders_details WHERE order_id=\''+str(order.order_id)+'\' AND product_id=\''+str(product_id)+'\'')
+            db_conn.execute(
+                'DELETE FROM orders_details \
+                WHERE \
+                    order_id=\''+str(order.order_id)+'\' \
+                    AND \
+                    product_id=\''+str(product_id)+'\''
+            )
         else:
-            db_conn.execute('UPDATE orders_details AS od SET quantity=\''+str((order_detail.quantity-1))+'\' WHERE od.order_id=\''+str(order_detail.order_id)+'\' AND od.product_id=\''+str(order_detail.product_id)+'\'')
+            db_conn.execute(
+                'UPDATE orders_details AS od \
+                SET quantity=\''+str((order_detail.quantity-1))+'\' \
+                WHERE \
+                    od.order_id=\''+str(order_detail.order_id)+'\' \
+                    AND \
+                    od.product_id=\''+str(order_detail.product_id)+'\''
+            )
                
         db_conn.close() 
         return True
@@ -364,7 +509,14 @@ def process_payment(user):
         db_conn = None
         db_conn = db_engine.connect()
 
-        db_conn.execute('UPDATE orders SET status=\'Paid\' WHERE user_id=\''+str(user.user_id)+'\' AND status IS NULL')
+        db_conn.execute(
+            'UPDATE orders \
+            SET status=\'Paid\' \
+            WHERE \
+                user_id=\''+str(user.user_id)+'\' \
+                AND \
+                status IS NULL'
+        )
         
         db_conn.close() 
         return True
@@ -387,7 +539,24 @@ def load_user_history(user):
         db_conn = None
         db_conn = db_engine.connect()
 
-        result = db_conn.execute('SELECT * FROM (SELECT * FROM orders AS ord WHERE ord.user_id=\''+str(user.user_id)+'\' AND ord.status IS NOT NULL) AS o JOIN orders_details AS od ON o.order_id=od.order_id JOIN products AS p ON od.product_id=p.product_id JOIN movies AS m ON p.movie_id=m.movie_id ORDER BY o.date DESC')
+        result = db_conn.execute(
+            'SELECT * \
+            FROM \
+                (SELECT * \
+                FROM orders AS ord \
+                WHERE \
+                    ord.user_id=\''+str(user.user_id)+'\' \
+                    AND \
+                    ord.status IS NOT NULL) \
+                AS o \
+            JOIN orders_details AS od \
+            ON o.order_id=od.order_id \
+            JOIN products AS p \
+            ON od.product_id=p.product_id \
+            JOIN movies AS m \
+            ON p.movie_id=m.movie_id \
+            ORDER BY o.date DESC'
+        )
         
         db_conn.close()
 

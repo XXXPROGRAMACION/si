@@ -25,7 +25,6 @@
   </head>
   <body>
     <h2>Lista de clientes por mes</h2>
-
     {% if not fecha is string %}
         <form action="" method="post">
           Mes y año: 
@@ -64,12 +63,10 @@
           <br>
           <input type="submit" name="fecha" value="Enviar">
         </form>
-
     {% else %}
         <!-- Impresion de resultados en HTML -->
         <p>Número de clientes distintos con pedidos 
         por encima del valor indicado en el mes {{mes}}/{{anio}}.</p>
-
         <table><tr><th>Mayor que (euros)</th><th>Número de clientes</th></tr>
         {% for item in dbr %}
            <tr><td>{{ item.umbral }}</td><td>{{ item.contador }}</td></tr>            
@@ -78,11 +75,8 @@
         <p>Tiempo: {{ tiempo }} ms</p>
         {% if use_prepare %}
             <p><b>Usando prepare</b></p>
-        {% endif %}
-          
+        {% endif %}          
         <p><a href={{ url_for('listaClientesMes') }}>Nueva consulta</a></p>
-
     {% endif %}
-
   </body>
 </html>

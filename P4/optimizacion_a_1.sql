@@ -11,8 +11,8 @@ FROM (
 		JOIN orders AS o
 		ON od.orderid=o.orderid
 	WHERE
-		o.orderdate>='2015-04-01'
-		AND o.orderdate<='2015-04-30'
+		EXTRACT(YEAR FROM o.orderdate)='2015'
+		AND EXTRACT(MONTH FROM o.orderdate)='04'
 	GROUP BY o.customerid
 	HAVING SUM(od.price*od.quantity)>100
 ) AS filtered_customers;

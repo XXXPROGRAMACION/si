@@ -8,6 +8,11 @@ import os
 import sys
 import time
 
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+
 @app.route('/borraCliente', methods=['POST','GET'])
 def borraCliente():
     if 'customerid' in request.form:
@@ -58,17 +63,18 @@ def listaClientesMes():
         t1=round(time.time() * 1000)
         database.dbCloseConnect(db_conn)
         
-        return render_template('listaClientesMes.html', 
-            fecha = fecha,
-            mes   = mes,
-            anio  = anio,
-            umbral = int(umbral),
-            intervalo = int(intervalo),
-            use_prepare = use_prepare,
-            break0 = break0,
-            tiempo = str(int(t1-t0)),
+        return render_template(
+            'listaClientesMes.html', 
+            fecha=fecha,
+            mes=mes,
+            anio=anio,
+            umbral=int(umbral),
+            intervalo=int(intervalo),
+            use_prepare=use_prepare,
+            break0=break0,
+            tiempo=str(int(t1-t0)),
             dbr=dbr
-           )
+        )
     else:
         return render_template('listaClientesMes.html')
 

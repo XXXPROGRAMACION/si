@@ -16,27 +16,56 @@ def dbCloseConnect(db_conn):
 
 def getListaCliMes(db_conn, mes, anio, iumbral, iintervalo, use_prepare, break0, niter):
 
-    # TODO: implementar la consulta; asignar nombre 'cc' al contador resultante
-    consulta = " ... "
+    # DONE: implementar la consulta; asignar nombre 'cc' al contador resultante
+    consulta = """
+        SELECT COUNT(*) AS cc
+        FROM (
+            SELECT
+                o.customerid AS customer_id,
+                SUM(od.price*od.quantity) AS total_amount
+            FROM
+                orderdetail AS od
+                JOIN orders AS o
+                ON od.orderid=o.orderid
+            WHERE
+                EXTRACT(YEAR FROM o.orderdate)=%s
+                AND EXTRACT(MONTH FROM o.orderdate)=%s
+            GROUP BY o.customerid
+            HAVING SUM(od.price*od.quantity)>%s
+        ) AS filtered_customers;
+    """
     
-    # TODO: ejecutar la consulta 
+    # DONE: ejecutar la consulta 
     # - mediante PREPARE, EXECUTE, DEALLOCATE si use_prepare es True
     # - mediante db_conn.execute() si es False
 
     # Array con resultados de la consulta para cada umbral
     dbr=[]
 
-    for ii in range(niter):
+    if use_prepare:
+        db_conn.execute("PREPARE listaClientesMesPlan AS " + (consulta % (str(anio), str(mes), "$1")))
 
-        # TODO: ...
+    for ii in range(niter):
+        if use_prepare:
+            res = list(db_conn.execute("EXECUTE listaClientesMesPlan(%s)" % (iumbral)))[0]
+        else:
+            res = list(db_conn.execute(consulta % (str(anio), str(mes), str(iumbral))))[0]
 
         # Guardar resultado de la query
-        dbr.append({"umbral":iumbral,"contador":res['cc']})
+        dbr.append({
+            "umbral": iumbral,
+            "contador": res[0]
+        })
 
-        # TODO: si break0 es True, salir si contador resultante es cero
+        # DONE: si break0 es True, salir si contador resultante es cero
+        if break0 and res['cc'] == 0:
+            break
         
         # Actualizacion de umbral
-        iumbral = iumbral + iintervalo
+        iumbral += iintervalo
+
+    if use_prepare:
+        db_conn.execute("DEALLOCATE listaClientesMesPlan")
                 
     return dbr
 

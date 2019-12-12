@@ -32,7 +32,7 @@ def getListaCliMes(db_conn, mes, anio, iumbral, iintervalo, use_prepare, break0,
                 AND EXTRACT(MONTH FROM o.orderdate)=%s
             GROUP BY o.customerid
             HAVING SUM(od.price*od.quantity)>%s
-        ) AS filtered_customers;
+        ) AS filtered_customers
     """
     
     # DONE: ejecutar la consulta 
@@ -110,20 +110,100 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
     # Array de trazas a mostrar en la página
     dbr=[]
 
+    consulta_eliminar_customers = """
+        DELETE FROM customers AS c
+        WHERE c.customerid=%s
+    """
+
+    consulta_eliminar_orders = """
+        DELETE FROM orders AS o
+        WHERE o.customerid=%s
+    """
+
+    consulta_eliminar_orderdetail = """
+        DELETE FROM orderdetail AS od
+        WHERE od.orderid IN (
+            SELECT o.orderid
+            FROM orders AS o
+            WHERE o.customerid=%s
+        )
+    """
+    
+    if bSQL:
+        db_conn = dbConnect()
+    else:
+        Session = sessionmaker(bind=db_engine)
+
     # TODO: Ejecutar consultas de borrado
     # - ordenar consultas según se desee provocar un error (bFallo True) o no
     # - ejecutar commit intermedio si bCommit es True
     # - usar sentencias SQL ('BEGIN', 'COMMIT', ...) si bSQL es True
     # - suspender la ejecución 'duerme' segundos en el punto adecuado para forzar deadlock
     # - ir guardando trazas mediante dbr.append()
-    
-    """ try:
-        # TODO: ejecutar consultas
-    except Exception as e:
-        # TODO: deshacer en caso de error
-    else:
-        # TODO: confirmar cambios si todo va bien """
 
+    try:
+        if bSQL:
+            db_conn.execute('BEGIN')
+        else:
+            session = Session()
+        # DONE: ejecutar consultas
+        if not bFallo:
+            dbr.append('Se elimina orderdetail.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_orderdetail % (customerid))
+            else:
+                session.query(consulta_eliminar_orderdetail % (customerid))
+            dbr.append('Se elimina orders.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_orders % (customerid))
+            else:
+                session.query(consulta_eliminar_orders % (customerid))
+            dbr.append('Se elimina customers.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_customers % (customerid))
+            else:
+                session.query(consulta_eliminar_customers % (customerid))
+        else:
+            dbr.append('Se elimina orderdetail.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_orderdetail % (customerid))
+            else:
+                session.query(consulta_eliminar_orderdetail % (customerid))
+            if bCommit:
+                dbr.append('Se hace commit.')
+                if bSQL:
+                    db_conn.execute('COMMIT')
+                    db_conn.execute('BEGIN')
+                else:
+                    session.commit()
+                    session.begin()
+            dbr.append('Se elimina orders.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_customers % (customerid))
+            else:
+                session.query(consulta_eliminar_customers % (customerid))
+            dbr.append('Se elimina customers.')
+            if bSQL:
+                db_conn.execute(consulta_eliminar_orders % (customerid))
+            else:
+                session.query(consulta_eliminar_orders % (customerid))
+
+    except Exception as e:
+        # DONE: deshacer en caso de error
+        dbr.append('Fallo en la eliminación. Se hace rollback.')
+        if bSQL:
+            db_conn.execute('ROLLBACK')
+        else:
+            session.rollback()
+    else:
+        # DONE: confirmar cambios si todo va bien
+        dbr.append('Se hace commit.')
+        if bSQL:
+            db_conn.execute('COMMIT')
+        else:
+            session.commit()
+
+    dbCloseConnect(db_conn)
         
     return dbr
 

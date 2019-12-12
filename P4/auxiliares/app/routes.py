@@ -23,7 +23,7 @@ def borraCliente():
         duerme  = request.form["duerme"]
         dbr = database.delCustomer(customerid, bFallo, bSQL=='1', int(duerme), bCommit)
         return render_template('borraCliente.html', dbr=dbr)
-    else:                
+    else:
         return render_template('borraCliente.html')
     
 @app.route('/xSearchInjection', methods=['GET'])

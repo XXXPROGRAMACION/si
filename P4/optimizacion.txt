@@ -1,0 +1,3 @@
+Ejercicio C:
+  1) ???
+  2) La segunda y tercera consulta (usando UNION y EXCEPT) tiene dos subconsultas completamente independientes entre sí, por lo que se pueden realizar en paralelo. Esto es coherente con los operadores de conjuntos, cuyas partes son independiente entre sí. En la primera consulta, pese a existir una subconsulta, solo se puede ejecutar en serie con la principal, ya que la principal es dependiente de ella.

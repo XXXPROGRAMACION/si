@@ -168,6 +168,8 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
                 db_conn.execute(consulta_eliminar_orders % (customerid))
             else:
                 session.query(Orders).filter(Orders.c.customerid==int(customerid)).delete()
+            if duerme > 0:
+                time.sleep(duerme)
             dbr.append('Se elimina customers.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_customers % (customerid))

@@ -1,37 +1,28 @@
-DROP INDEX IF EXISTS index_orderdetail_orderid;
-DROP INDEX IF EXISTS index_orders_orderdate;
-CREATE INDEX index_orders_orderdate ON orders(orderdate);
+DROP INDEX IF EXISTS index_orders_customerid;
+DROP INDEX IF EXISTS index_orders_totalamount;
+CREATE INDEX index_orders_totalamount ON orders(totalamount);
 
-EXPLAIN SELECT COUNT(*)
-FROM (
-	SELECT
-		o.customerid AS customer_id,
-		SUM(od.price*od.quantity) AS total_amount
-	FROM
-		orderdetail AS od
-		JOIN orders AS o
-		ON od.orderid=o.orderid
-	WHERE
-		EXTRACT(YEAR FROM o.orderdate)='2015'
-		AND EXTRACT(MONTH FROM o.orderdate)='04'
-	GROUP BY o.customerid
-	HAVING SUM(od.price*od.quantity)>100
-) AS filtered_customers;
+EXPLAIN SELECT DISTINCT
+	o.customerid AS customer_id
+FROM orders AS o
+WHERE
+	o.totalamount>100
+	AND EXTRACT(YEAR FROM o.orderdate)='2015'
+	AND EXTRACT(MONTH FROM o.orderdate)='04'
+;
 
 -- Explain:
--- Aggregate  (cost=30276.65..30276.66 rows=1 width=8)
---  -> Finalize GroupAggregate  (cost=30275.08..30276.58 rows=5 width=36)
+-- Aggregate  (cost=6549.94..6549.95 rows=1 width=8)
+--  -> Finalize GroupAggregate  (cost=6549.79..6549.88 rows=5 width=36)
 --     Group Key: o.customerid
---     Filter: (sum((od.price * (od.quantity)::numeric)) > '100'::numeric)
---      -> Gather Merge  (cost=30275.08..30276.45 rows=10 width=36)
---         Workers Planned: 2
---          -> Partial GroupAggregate  (cost=29275.05..29275.27 rows=5 width=36)
---             Group Key: o.customerid
---              -> Sort  (cost=29275.05..29275.08 rows=12 width=14)
---                 Sort Key: o.customerid
---                  -> Hash Join  (cost=5866.81..29274.84 rows=12 width=14)
---                     Hash Cond: (od.orderid = o.orderid)
---                      -> Parallel Seq Scan on orderdetail od  (cost=0.00..22314.13 rows=416713 width=14)
---                      -> Hash  (cost=5866.75..5866.75 rows=5 width=8)
---                          ->  Seq Scan on orders o  (cost=0.00..5866.75 rows=5 width=8)
---                              Filter: ((date_part('year'::text, (orderdate)::timestamp without time zone) = '2015'::double precision) AND (date_part('month'::text, (orderdate)::timestamp without time zone) = '4'::double precision))
+--     Filter: (sum(o.totalamount) > '100'::numeric)
+--      -> Sort  (cost=6549.79..6549.80 rows=3 width=36)
+--         Sort Key: o.customerid
+--          -> Gather  (cost=6549.41..6549.77 rows=3 width=36)
+--             Workers Planned: 1
+--              -> Partial GroupAggregate  (cost=5549.41..5549.47 rows=3 width=36)
+--                 Group Key: o.customerid
+--                  -> Sort  (cost=5549.41..5549.41 rows=3 width=10)
+--                     Sort Key: o.customerid
+--                      -> Parallel Seq Scan on orders o  (cost=0.00..5549.38 rows=3 width=10)
+--                         Filter: ((date_part('year'::text, (orderdate)::timestamp without time zone) = '2015'::double precision) AND (date_part('month'::text, (orderdate)::timestamp without time zone) = '4'::double precision))

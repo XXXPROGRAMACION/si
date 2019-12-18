@@ -16,18 +16,18 @@ SET price=ROUND(
 FROM orders AS o
 WHERE od.orderid=o.orderid;
 -- UPDATE orders SET net_amount=NULL, total_amount=NULL;
-CREATE OR REPLACE VIEW orders_details_net_amount AS
+CREATE OR REPLACE VIEW orderdetail_netamount AS
 SELECT
-    order_id,
-    SUM(price*quantity) AS net_amount
-FROM orders_details
-GROUP BY order_id;
+    orderid,
+    SUM(price*quantity) AS netamount
+FROM orderdetail
+GROUP BY orderid;
 UPDATE orders AS o
 SET
-    net_amount=odn.net_amount,
-    total_amount=ROUND(CAST(odn.net_amount*(100+o.tax)/100 AS numeric), 2)
-FROM orders_details_net_amount AS odn
+    netamount=odn.netamount,
+    totalamount=ROUND(CAST(odn.netamount*(100+o.tax)/100 AS numeric), 2)
+FROM orderdetail_netamount AS odn
 WHERE
-    o.net_amount IS NULL
-    AND o.order_id=odn.order_id
+    o.netamount IS NULL
+    AND o.orderid=odn.orderid
 ;

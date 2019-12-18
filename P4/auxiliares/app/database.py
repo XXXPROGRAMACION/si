@@ -3,7 +3,8 @@
 import os
 import sys, traceback, time
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
+from sqlalchemy.orm import sessionmaker
 
 # configurar el motor de sqlalchemy
 db_engine = create_engine("postgresql://alumnodb:alumnodb@localhost/si1", echo=False, execution_options={"autocommit":False})
@@ -66,6 +67,10 @@ def getListaCliMes(db_conn, mes, anio, iumbral, iintervalo, use_prepare, break0,
 
     if use_prepare:
         db_conn.execute("DEALLOCATE listaClientesMesPlan")
+        print('Con PREPARE')
+    else:
+        print('Sin PREPARE')
+
                 
     return dbr
 
@@ -133,8 +138,12 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
         db_conn = dbConnect()
     else:
         Session = sessionmaker(bind=db_engine)
+        metaData = MetaData(bind=db_engine, reflect=True)
+        Customers = metaData.tables['customers']
+        Orders = metaData.tables['orders']
+        OrderDetail = metaData.tables['orderdetail']
 
-    # TODO: Ejecutar consultas de borrado
+    # DONE: Ejecutar consultas de borrado
     # - ordenar consultas según se desee provocar un error (bFallo True) o no
     # - ejecutar commit intermedio si bCommit es True
     # - usar sentencias SQL ('BEGIN', 'COMMIT', ...) si bSQL es True
@@ -152,23 +161,25 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
             if bSQL:
                 db_conn.execute(consulta_eliminar_orderdetail % (customerid))
             else:
-                session.query(consulta_eliminar_orderdetail % (customerid))
+                sq = session.query(Orders).filter(Orders.c.customerid==int(customerid)).subquery()
+                session.query(OrderDetail).filter(OrderDetail.c.orderid.in_(sq)).delete()
             dbr.append('Se elimina orders.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_orders % (customerid))
             else:
-                session.query(consulta_eliminar_orders % (customerid))
+                session.query(Orders).filter(Orders.c.customerid==int(customerid)).delete()
             dbr.append('Se elimina customers.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_customers % (customerid))
             else:
-                session.query(consulta_eliminar_customers % (customerid))
+                session.query(Customers).filter(Customers.c.id==int(customerid)).delete()
         else:
             dbr.append('Se elimina orderdetail.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_orderdetail % (customerid))
             else:
-                session.query(consulta_eliminar_orderdetail % (customerid))
+                sq = session.query(Orders).filter(Orders.c.customerid==int(customerid)).subquery()
+                session.query(OrderDetail).filter(OrderDetail.c.orderid.in_(sq)).delete()
             if bCommit:
                 dbr.append('Se hace commit.')
                 if bSQL:
@@ -177,18 +188,18 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
                 else:
                     session.commit()
                     session.begin()
-            dbr.append('Se elimina orders.')
+            dbr.append('Se elimina customers.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_customers % (customerid))
             else:
-                session.query(consulta_eliminar_customers % (customerid))
-            dbr.append('Se elimina customers.')
+                session.query(Customers).filter(Customers.c.id==int(customerid)).delete()
+            dbr.append('Se elimina orders.')
             if bSQL:
                 db_conn.execute(consulta_eliminar_orders % (customerid))
             else:
-                session.query(consulta_eliminar_orders % (customerid))
-
+                session.query(Orders).filter(Orders.c.customerid==int(customerid)).delete()
     except Exception as e:
+        print(e)
         # DONE: deshacer en caso de error
         dbr.append('Fallo en la eliminación. Se hace rollback.')
         if bSQL:
@@ -200,10 +211,10 @@ def delCustomer(customerid, bFallo, bSQL, duerme, bCommit):
         dbr.append('Se hace commit.')
         if bSQL:
             db_conn.execute('COMMIT')
+            dbCloseConnect(db_conn)
         else:
             session.commit()
-
-    dbCloseConnect(db_conn)
+            session.close()
         
     return dbr
 

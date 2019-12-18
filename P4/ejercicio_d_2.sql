@@ -20,9 +20,9 @@ CREATE INDEX index_orders_status ON orders(status);
 --          -> Parallel Seq Scan on orders  (cost=0.00..2658.69 rows=74837 width=0)
 --             Filter: ((status)::text = 'Shipped'::text)
 
-EXPLAIN orders;
+ANALYZE orders;
 
--- Explain orders. Explain:
+-- Analyze orders. Explain:
 -- Finalize Aggregate  (cost=3845.60..3845.61 rows=1 width=8)
 --  -> Gather  (cost=3845.49..3845.60 rows=1 width=8)
 --     Workers Planned: 1

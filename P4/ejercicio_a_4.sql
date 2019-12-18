@@ -1,7 +1,7 @@
 DROP INDEX IF EXISTS index_orders_totalamount;
 DROP INDEX IF EXISTS index_orders_orderdate;
 DROP INDEX IF EXISTS index_orders_customerid;
-CREATE INDEX index_orders_orderdate ON orders(orderdate);
+CREATE INDEX index_orders_customerid ON orders(customerid);
 
 EXPLAIN SELECT COUNT(*)
 FROM (

@@ -19,8 +19,8 @@ FROM (
 --  -> Unique (cost=5669.33..5669.34 rows=2 width=4)
 --      -> Sort (cost=5669.33..5669.33 rows=2 width=4)
 --         Sort Key: o.customerid
---          -> Bitmap Heap Scan on orders o  (cost=1126.90..5669.32 rows=2 width=4)
+--          -> Bitmap Heap Scan on orders o (cost=1126.90..5669.32 rows=2 width=4)
 --             Recheck Cond: (totalamount > '100'::numeric)
 --             Filter: (...)
---              -> Bitmap Index Scan on index_orders_totalamount  (cost=0.00..1126.90 rows=60597 width=0)
+--              -> Bitmap Index Scan on index_orders_totalamount (cost=0.00..1126.90 rows=60597 width=0)
 --                 Index Cond: (totalamount > '100'::numeric)

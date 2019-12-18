@@ -21,5 +21,5 @@ FROM (
 --         Sort Key: o.customerid
 --          -> Gather (cost=1000.00..6816.92 rows=2 width=4)
 --             Workers Planned: 1
---              -> Parallel Seq Scan on orders o  (cost=0.00..5816.72 rows=1 width=4)
+--              -> Parallel Seq Scan on orders o (cost=0.00..5816.72 rows=1 width=4)
 --                 Filter: (...)
